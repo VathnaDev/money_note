@@ -104,6 +104,7 @@ class OnboardingItem extends StatelessWidget {
           SvgPicture.asset(image),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: textTheme.headline2?.copyWith(color: Colors.black),
           ),
           const SizedBox(height: 8),
@@ -111,7 +112,7 @@ class OnboardingItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               description,
-              style: textTheme.bodyText1?.copyWith(color: Colors.grey),
+              style: textTheme.subtitle1?.copyWith(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ),
