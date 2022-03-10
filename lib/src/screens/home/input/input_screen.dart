@@ -13,7 +13,7 @@ class InputScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 0,
+          toolbarHeight: 10,
           bottom: const TabBar(
             tabs: [
               Tab(text: "Expense"),
@@ -21,7 +21,7 @@ class InputScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             InputView(inputType: InputType.expense),
             InputView(inputType: InputType.income),
@@ -128,8 +128,10 @@ class InputView extends StatelessWidget {
               shrinkWrap: true,
               crossAxisCount: 4,
               children: [
-                if(inputType == InputType.expense) ...expenseCategories.map((e) => CategoryItem(category: e)),
-                if(inputType == InputType.income) ...incomeCategories.map((e) => CategoryItem(category: e)),
+                if (inputType == InputType.expense)
+                  ...expenseCategories.map((e) => CategoryItem(category: e)),
+                if (inputType == InputType.income)
+                  ...incomeCategories.map((e) => CategoryItem(category: e)),
               ],
             ),
             const SizedBox(height: 12),

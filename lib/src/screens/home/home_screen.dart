@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/screens/home/calculator/calculator_screen.dart';
 import 'package:money_note/src/screens/home/input/input_screen.dart';
+import 'package:money_note/src/screens/home/report/report_screen.dart';
+import 'package:money_note/src/screens/home/settings/settings_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends HookConsumerWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  final screens = [
+    const InputScreen(),
+    const CalculatorScreen(),
+    const ReportScreen(),
+    const SettingsScreen(),
+  ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTab = useState(0);
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Expense Note"),
-        elevation: 0,
-      ),
-      body: InputScreen(),
+      body: screens[selectedTab.value],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         unselectedItemColor: Color(0xFF404040),
         selectedItemColor: Color(0xFF404040),
-        currentIndex: 0,
+        currentIndex: selectedTab.value,
+        onTap: (value) {
+          selectedTab.value = value;
+        },
         items: [
           BottomNavigationBarItem(
             label: "Input",
