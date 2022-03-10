@@ -11,7 +11,6 @@ final expenseCategories = [
   Category(name: "Party", icon: "assets/icons/Party.svg"),
   Category(name: "Gift", icon: "assets/icons/Gift.svg"),
   Category(name: "Gas", icon: "assets/icons/Gas.svg"),
-  Category(name: "Edit"),
 ];
 
 final incomeCategories = [
@@ -19,5 +18,4 @@ final incomeCategories = [
   Category(name: "Salary", icon: "assets/icons/Money.svg"),
   Category(name: "Bonus", icon: "assets/icons/Coin.svg"),
   Category(name: "Loan", icon: "assets/icons/User.svg"),
-  Category(name: "Edit"),
 ];

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/utils/constants.dart';
+import 'package:money_note/src/utils/date_ext.dart';
+import 'package:money_note/src/widgets/category_grid.dart';
+import 'package:money_note/src/widgets/category_item.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key? key}) : super(key: key);
@@ -32,7 +36,7 @@ class InputScreen extends StatelessWidget {
   }
 }
 
-class InputView extends StatelessWidget {
+class InputView extends HookConsumerWidget {
   const InputView({
     Key? key,
     required this.inputType,
@@ -41,8 +45,21 @@ class InputView extends StatelessWidget {
   final InputType inputType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    var amount = useState(0.0);
+    var note = useState("");
+    var category = useState<Category?>(null);
+    var date = useState(DateTime.now());
+
+    void onCategorySelected(Category selectedCategory) {
+      category.value = selectedCategory;
+      if (selectedCategory.icon == null) {
+        category.value = null;
+      }
+    }
+
+    final isValid = amount.value > 0 && category.value != null;
 
     return SingleChildScrollView(
       primary: true,
@@ -65,13 +82,16 @@ class InputView extends StatelessWidget {
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(999)),
                       child: InkWell(
-                        onTap: () {},
-                        child: Icon(Icons.chevron_left),
+                        onTap: () {
+                          date.value =
+                              date.value.subtract(const Duration(days: 1));
+                        },
+                        child: const Icon(Icons.chevron_left),
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        "Feb 24, 2022 (Sat)",
+                        date.value.displayFormat(),
                         textAlign: TextAlign.center,
                         style: textTheme.bodyText1,
                       ),
@@ -83,8 +103,10 @@ class InputView extends StatelessWidget {
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(999)),
                       child: InkWell(
-                        onTap: () {},
-                        child: Icon(Icons.chevron_right),
+                        onTap: () {
+                          date.value = date.value.add(const Duration(days: 1));
+                        },
+                        child: const Icon(Icons.chevron_right),
                       ),
                     ),
                   ],
@@ -93,10 +115,17 @@ class InputView extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(inputType == InputType.expense ? "Expense" : "Income"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  amount.value = 0;
+                } else {
+                  amount.value = double.parse(value);
+                }
+              },
+              decoration: const InputDecoration(
                 hintText: "0.00",
                 prefixIcon: Icon(
                   Icons.attach_money,
@@ -104,77 +133,39 @@ class InputView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text("Note"),
-            SizedBox(height: 8),
+            const Text("Note"),
+            const SizedBox(height: 8),
             TextField(
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                note.value = value;
+              },
               decoration: InputDecoration(
                 hintText: "Please input",
                 suffixIcon: IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.camera_alt_outlined,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 12),
-            Text("Category"),
-            SizedBox(height: 8),
-            GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-              shrinkWrap: true,
-              crossAxisCount: 4,
-              children: [
-                if (inputType == InputType.expense)
-                  ...expenseCategories.map((e) => CategoryItem(category: e)),
-                if (inputType == InputType.income)
-                  ...incomeCategories.map((e) => CategoryItem(category: e)),
-              ],
+            const Text("Category"),
+            const SizedBox(height: 8),
+            CategoryGrid(
+              items: inputType == InputType.expense
+                  ? expenseCategories
+                  : incomeCategories,
+              selectedCategory: category.value,
+              onItemTap: (item) {
+                category.value = item;
+              },
             ),
             const SizedBox(height: 12),
-            ElevatedButton(onPressed: () {}, child: Text("Submit")),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    Key? key,
-    required this.category,
-    this.onItemTap,
-  }) : super(key: key);
-
-  final Category category;
-  final Function(Category)? onItemTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onItemTap?.call(category);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFD9D9D9)),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (category.icon != null) SvgPicture.asset(category.icon!),
-            if (category.icon != null) SizedBox(height: 2),
-            Text(
-              category.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  ?.copyWith(color: Colors.black),
+            ElevatedButton(
+              onPressed: isValid ? () {} : null,
+              child: const Text("Submit"),
             ),
           ],
         ),
