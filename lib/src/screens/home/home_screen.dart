@@ -13,7 +13,7 @@ class HomeScreen extends HookConsumerWidget {
   final screens = [
     const InputScreen(),
     const CalculatorScreen(),
-    const ReportScreen(),
+     ReportScreen(),
     const SettingsScreen(),
   ];
 
