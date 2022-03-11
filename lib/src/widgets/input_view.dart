@@ -6,7 +6,7 @@ import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
-import 'package:money_note/src/widgets/DatePicker.dart';
+import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
 

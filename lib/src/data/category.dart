@@ -1,6 +1,11 @@
-class Category {
-  final String name;
-  final String? icon;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Category({required this.name, this.icon});
+part 'category.freezed.dart';
+
+@freezed
+class Category with _$Category {
+  factory Category({
+    required String name,
+    String? icon,
+  }) = _Category;
 }
