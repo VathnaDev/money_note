@@ -9,8 +9,10 @@ class CategoryItem extends StatelessWidget {
     required this.isSelected,
     this.onItemTap,
     this.selectedColor,
+    this.displayLabel,
   }) : super(key: key);
 
+  final bool? displayLabel;
   final Color? selectedColor;
   final bool isSelected;
   final Category category;
@@ -34,15 +36,22 @@ class CategoryItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (category.icon != null) SvgPicture.asset(category.icon!),
+            if (category.icon != null)
+              SvgPicture.asset(
+                category.icon!,
+                color: isSelected
+                    ? (selectedColor ?? Theme.of(context).primaryColor)
+                    : null,
+              ),
             if (category.icon != null) const SizedBox(height: 2),
-            Text(
-              category.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  ?.copyWith(color: Colors.black),
-            ),
+            if (displayLabel ?? true)
+              Text(
+                category.name,
+                style: Theme.of(context).textTheme.caption?.copyWith(
+                    color: isSelected
+                        ? (selectedColor ?? Theme.of(context).primaryColor)
+                        : Colors.black),
+              ),
           ],
         ),
       ),

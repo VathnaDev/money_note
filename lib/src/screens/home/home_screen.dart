@@ -22,11 +22,11 @@ class HomeScreen extends HookConsumerWidget {
     final selectedTab = useState(0);
 
     return Scaffold(
-      body: screens[selectedTab.value],
+      body: IndexedStack(
+        children: screens,
+        index: selectedTab.value,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         unselectedItemColor: Color(0xFF404040),

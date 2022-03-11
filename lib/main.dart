@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_note/src/screens/edit_category/edit_category_screen.dart';
+import 'package:money_note/src/screens/category/add_category/add_category.dart';
+import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/screens/onboard/onboard_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-      home: EditCategoryScreen(),
+      home: HomeScreen(),
     );
   }
 }

@@ -7,8 +7,16 @@ class CategoryGrid extends StatelessWidget {
     Key? key,
     required this.items,
     this.selectedCategory,
-    this.onItemTap, this.selectedColor,
+    this.onItemTap,
+    this.selectedColor,
+    this.physics,
+    this.padding,
+    this.displayLabel,
   }) : super(key: key);
+
+  final ScrollPhysics? physics;
+  final EdgeInsetsGeometry? padding;
+  final bool? displayLabel;
 
   final Color? selectedColor;
   final Category? selectedCategory;
@@ -18,7 +26,8 @@ class CategoryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
+      padding: padding,
+      physics: physics,
       crossAxisSpacing: 4,
       mainAxisSpacing: 4,
       shrinkWrap: true,
@@ -29,7 +38,8 @@ class CategoryGrid extends StatelessWidget {
             category: e,
             isSelected: selectedCategory == e,
             onItemTap: onItemTap,
-            selectedColor: selectedColor
+            selectedColor: selectedColor,
+            displayLabel: displayLabel,
           ),
         ),
       ],
