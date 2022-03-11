@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
-import 'package:money_note/src/widgets/category_item.dart';
+import 'package:money_note/src/widgets/image_grid.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key? key}) : super(key: key);
@@ -51,15 +53,52 @@ class InputView extends HookConsumerWidget {
     var note = useState("");
     var category = useState<Category?>(null);
     var date = useState(DateTime.now());
+    var images = useState<List<String>>([]);
+
+    final isValid = amount.value > 0 && category.value != null;
+
+    final List<Category> categories = [
+      ...(inputType == InputType.expense
+          ? expenseCategories
+          : incomeCategories),
+      Category(name: "Edit")
+    ];
 
     void onCategorySelected(Category selectedCategory) {
       category.value = selectedCategory;
       if (selectedCategory.icon == null) {
         category.value = null;
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const EditCategoryScreen()),
+        );
       }
     }
 
-    final isValid = amount.value > 0 && category.value != null;
+    void onDateClicked() async {
+      final pickedDate = await showDatePicker(
+        context: context,
+        initialDate: date.value,
+        firstDate: DateTime.now().subtract(const Duration(days: 365)),
+        lastDate: DateTime.now().add(const Duration(days: 365 * 10)),
+      );
+      if (pickedDate != null) {
+        date.value = pickedDate;
+      }
+    }
+
+    void pickImage() async {
+      final ImagePicker _picker = ImagePicker();
+      final image = await _picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        images.value.add(image.path);
+        images.value = List.from(images.value);
+      }
+    }
+
+    void onRemoveImage(String path) {
+      images.value.remove(path);
+      images.value = List.from(images.value);
+    }
 
     return SingleChildScrollView(
       primary: true,
@@ -83,17 +122,21 @@ class InputView extends HookConsumerWidget {
                           borderRadius: BorderRadius.circular(999)),
                       child: InkWell(
                         onTap: () {
-                          date.value =
-                              date.value.subtract(const Duration(days: 1));
+                          date.value = date.value.subtract(
+                            const Duration(days: 1),
+                          );
                         },
                         child: const Icon(Icons.chevron_left),
                       ),
                     ),
                     Expanded(
-                      child: Text(
-                        date.value.displayFormat(),
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyText1,
+                      child: GestureDetector(
+                        onTap: onDateClicked,
+                        child: Text(
+                          date.value.displayFormat(),
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyText1,
+                        ),
                       ),
                     ),
                     Container(
@@ -143,24 +186,24 @@ class InputView extends HookConsumerWidget {
               decoration: InputDecoration(
                 hintText: "Please input",
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: pickImage,
                   icon: const Icon(
                     Icons.camera_alt_outlined,
                   ),
                 ),
               ),
             ),
+            const SizedBox(height: 8),
+            if (images.value.isNotEmpty)
+              ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
             const SizedBox(height: 12),
             const Text("Category"),
             const SizedBox(height: 8),
             CategoryGrid(
-              items: inputType == InputType.expense
-                  ? expenseCategories
-                  : incomeCategories,
+              physics: const NeverScrollableScrollPhysics(),
+              items: categories,
               selectedCategory: category.value,
-              onItemTap: (item) {
-                category.value = item;
-              },
+              onItemTap: onCategorySelected,
             ),
             const SizedBox(height: 12),
             ElevatedButton(
