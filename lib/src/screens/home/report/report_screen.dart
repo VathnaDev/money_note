@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/screens/home/report/category_report/category_report_view.dart';
 import 'package:money_note/src/screens/home/report/mothly_report/mothly_report_view.dart';
 
 class ReportScreen extends HookConsumerWidget {
@@ -10,7 +11,7 @@ class ReportScreen extends HookConsumerWidget {
 
   final views = [
     MonthlyReportView(),
-    Container(),
+    CategoryReportView(),
   ];
 
   @override
@@ -23,7 +24,7 @@ class ReportScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Report"),
+        title: Text(filter.value == 0 ? "Monthly Report" : "Category Report"),
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
