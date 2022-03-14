@@ -50,7 +50,13 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditCategoryScreen(),
+                  ),
+                );
+              },
               title: Row(
                 children: [
                   Container(
