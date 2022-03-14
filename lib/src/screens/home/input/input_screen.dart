@@ -12,7 +12,8 @@ class InputScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 10,
-          bottom: const TabBar(
+          bottom:  TabBar(
+            indicatorColor: Theme.of(context).colorScheme.secondary,
             tabs: [
               Tab(text: "Expense"),
               Tab(text: "Income"),

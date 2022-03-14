@@ -45,7 +45,7 @@ class MonthlyReportView extends HookConsumerWidget {
                   color: Theme.of(context).backgroundColor,
                 ),
                 child: TabBar(
-                  indicatorColor: Colors.white,
+                  indicatorColor: Theme.of(context).colorScheme.secondary,
                   indicatorSize: TabBarIndicatorSize.tab,
                   tabs: [
                     Tab(text: "All"),

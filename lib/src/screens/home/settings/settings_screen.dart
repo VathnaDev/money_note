@@ -103,6 +103,7 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: SwitchListTile(
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (value) {
                 if (value) {
                   themeProvider.setDarkTheme();

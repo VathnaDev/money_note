@@ -112,14 +112,12 @@ class AppTheme {
     tabBarTheme: baseLightTheme.tabBarTheme.copyWith(
       labelColor: colorBlue
     ),
-    appBarTheme:  AppBarTheme(
+    appBarTheme:  baseLightTheme.appBarTheme.copyWith(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black
     ),
     colorScheme: baseLightTheme.colorScheme.copyWith(
-      primary: lightPrimary,
       secondary: colorBlue,
-      background: lightBackground,
     ),
   );
 
@@ -173,9 +171,8 @@ class AppTheme {
       backgroundColor: darkBlack,
     ),
     colorScheme: baseDarkTheme.colorScheme.copyWith(
-      primary: darkPrimary,
       secondary: colorBlue,
-      background: darkBackground,
+      secondaryContainer: colorBlue,
     ),
   );
 }
