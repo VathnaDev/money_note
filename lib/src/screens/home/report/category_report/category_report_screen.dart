@@ -20,7 +20,6 @@ class CategoryReportScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Category Report"),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         primary: true,

@@ -23,7 +23,6 @@ class EditCategoryScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: const Text("Edit Category"),
         actions: category.value == null
             ? null

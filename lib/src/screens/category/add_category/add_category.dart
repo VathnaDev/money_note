@@ -17,7 +17,6 @@ class AddCategory extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Category"),
-        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},

@@ -36,6 +36,7 @@ class HomeScreen extends HookConsumerWidget {
         selectedItemColor: activeColor,
         currentIndex: selectedTab.value,
         onTap: (value) {
+          FocusScope.of(context).unfocus();
           selectedTab.value = value;
         },
         items: [
