@@ -25,7 +25,6 @@ class ReportScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(filter.value == 0 ? "Monthly Report" : "Category Report"),
-        centerTitle: true,
         actions: [
           PopupMenuButton<int>(
             icon: const Icon(Icons.filter_alt_outlined),

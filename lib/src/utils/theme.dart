@@ -19,7 +19,7 @@ final boxDecoration = BoxDecoration(
 class AppTheme {
   AppTheme._();
 
-  static final baseLightTheme = ThemeData( );
+  static final baseLightTheme = ThemeData();
   static final baseDarkTheme = ThemeData.dark();
 
   static final inputTheme = InputDecorationTheme(
@@ -73,7 +73,8 @@ class AppTheme {
   static const lightSecondary = Color(0xFFA6A6A6);
 
   static final googleTextTheme = GoogleFonts.poppinsTextTheme();
-  static final textTheme = GoogleFonts.poppinsTextTheme(googleTextTheme).copyWith(
+  static final textTheme =
+      GoogleFonts.poppinsTextTheme(googleTextTheme).copyWith(
     headline1: googleTextTheme.headline1?.copyWith(
       fontSize: 32,
       fontWeight: FontWeight.normal,
@@ -109,13 +110,9 @@ class AppTheme {
     canvasColor: lightWhite,
     dialogBackgroundColor: lightWhite,
     popupMenuTheme: const PopupMenuThemeData(color: lightBackground),
-    tabBarTheme: baseLightTheme.tabBarTheme.copyWith(
-      labelColor: colorBlue
-    ),
-    appBarTheme:  baseLightTheme.appBarTheme.copyWith(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black
-    ),
+    tabBarTheme: baseLightTheme.tabBarTheme.copyWith(labelColor: colorBlue),
+    appBarTheme: baseLightTheme.appBarTheme
+        .copyWith(backgroundColor: Colors.white, foregroundColor: Colors.black),
     colorScheme: baseLightTheme.colorScheme.copyWith(
       secondary: colorBlue,
     ),
@@ -154,7 +151,10 @@ class AppTheme {
           fontSize: 12,
         ),
       )
-      .apply(bodyColor: darkPrimary,fontFamily: 'Poppin');
+      .apply(
+        bodyColor: darkPrimary,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      );
 
   static final darkTheme = baseDarkTheme.copyWith(
     elevatedButtonTheme: elevatedButtonTheme,

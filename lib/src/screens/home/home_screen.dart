@@ -19,7 +19,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTab = useState(3);
+    final selectedTab = useState(0);
 
     final activeColor = Theme.of(context).primaryColorDark;
     final unActiveColor = Theme.of(context).primaryColor;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/utils/theme.dart';
+import 'package:money_note/src/widgets/calculator_view.dart';
 
 class CalculatorScreen extends HookConsumerWidget {
   const CalculatorScreen({
@@ -9,7 +11,8 @@ class CalculatorScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text("CalculatorScreen")),
+      appBar: AppBar(title: Text("Calculator")),
+      body: CalculatorView(),
     );
   }
 }
