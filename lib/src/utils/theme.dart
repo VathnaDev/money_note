@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+const colorBlue = Color(0xFF5986F2);
+const colorRed = Color(0xFFFE7474);
+
+const colorIncome = Color(0xFF9AB8FF);
+const colorExpense = Color(0xFFFF9A9A);
+
 final outlinedButtonTheme = OutlinedButtonThemeData(
   style: ButtonStyle(
     padding: MaterialStateProperty.all(const EdgeInsets.all(10)),

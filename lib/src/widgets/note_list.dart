@@ -3,20 +3,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/utils/theme.dart';
 
 class NoteList extends StatelessWidget {
   NoteList({
     Key? key,
     required this.notes,
+    this.physics,
+    this.shrinkWrap,
   }) : super(key: key);
+
+  final ScrollPhysics? physics;
+  final bool? shrinkWrap;
 
   final List<Note> notes;
 
   @override
   Widget build(BuildContext context) {
-
     return GroupedListView(
+      physics: physics,
       elements: notes,
+      shrinkWrap: shrinkWrap ?? false,
       groupBy: (Note note) => note.date,
       groupHeaderBuilder: (Note note) => Container(
         color: Colors.grey[200],
@@ -53,8 +60,7 @@ class NoteList extends StatelessWidget {
               Text(
                 amount,
                 style: TextStyle(
-                  color:
-                      isExpense ? Colors.red : Theme.of(context).primaryColor,
+                  color: isExpense ? colorExpense : colorIncome,
                 ),
               ),
             ],

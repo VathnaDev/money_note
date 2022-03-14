@@ -5,6 +5,8 @@ import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/screens/onboard/onboard_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 
+import 'src/screens/home/report/category_report/category_report_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,11 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ThemeData();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       darkTheme: ThemeData.dark(),
-      theme: ThemeData(
+      theme: theme.copyWith(
         outlinedButtonTheme: outlinedButtonTheme,
         elevatedButtonTheme: elevatedButtonTheme,
         textTheme: textTheme,
@@ -31,7 +35,10 @@ class MyApp extends StatelessWidget {
             vertical: 12,
           ),
         ),
-        primarySwatch: Colors.blue,
+        colorScheme: theme.colorScheme.copyWith(
+          primary: Color(0xFF404040),
+          secondary: Color(0xFFA6A6A6),
+        )
       ),
       home: HomeScreen(),
     );
