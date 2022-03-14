@@ -19,7 +19,7 @@ final boxDecoration = BoxDecoration(
 class AppTheme {
   AppTheme._();
 
-  static final baseLightTheme = ThemeData();
+  static final baseLightTheme = ThemeData( );
   static final baseDarkTheme = ThemeData.dark();
 
   static final inputTheme = InputDecorationTheme(
@@ -154,7 +154,7 @@ class AppTheme {
           fontSize: 12,
         ),
       )
-      .apply(bodyColor: darkPrimary);
+      .apply(bodyColor: darkPrimary,fontFamily: 'Poppin');
 
   static final darkTheme = baseDarkTheme.copyWith(
     elevatedButtonTheme: elevatedButtonTheme,
