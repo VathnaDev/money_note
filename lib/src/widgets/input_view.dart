@@ -118,6 +118,7 @@ class InputView extends HookConsumerWidget {
             const Text("Category"),
             const SizedBox(height: 8),
             CategoryGrid(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               physics: const NeverScrollableScrollPhysics(),
               items: categories,
               selectedCategory: category.value,

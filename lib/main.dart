@@ -6,6 +6,7 @@ import 'package:money_note/src/screens/category/edit_category/edit_category_scre
 import 'package:money_note/src/screens/currency/curreny_screen.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/screens/onboard/onboard_screen.dart';
+import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 import 'src/screens/home/report/category_report/category_report_screen.dart';
@@ -30,7 +31,7 @@ class MyApp extends HookConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode:
           appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-      home: CurrencyScreen(),
+      home: HomeScreen(),
     );
   }
 }

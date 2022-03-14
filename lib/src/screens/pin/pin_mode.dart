@@ -1,0 +1,1 @@
+enum PinMode { set, verify }
