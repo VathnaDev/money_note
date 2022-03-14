@@ -53,6 +53,16 @@ class ReportScreen extends HookConsumerWidget {
                     children: [
                       Icon(Icons.event, color: Theme.of(context).primaryColor),
                       SizedBox(width: 16),
+                      Text("Calendar"),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<int>(
+                  value: 2,
+                  child: Row(
+                    children: [
+                      Icon(Icons.category, color: Theme.of(context).primaryColor),
+                      SizedBox(width: 16),
                       Text("Category"),
                     ],
                   ),
