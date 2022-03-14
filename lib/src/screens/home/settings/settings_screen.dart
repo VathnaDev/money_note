@@ -3,6 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/main.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
+import 'package:money_note/src/screens/currency/currency_screen.dart';
+import 'package:money_note/src/screens/pin/pin_screen.dart';
+import 'package:money_note/src/screens/reminder/reminder_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -53,7 +56,7 @@ class SettingsScreen extends HookConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => EditCategoryScreen(),
+                    builder: (context) => CurrencyScreen(),
                   ),
                 );
               },
@@ -76,7 +79,13 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PinScreen(),
+                  ),
+                );
+              },
               title: Row(
                 children: [
                   Container(
@@ -96,7 +105,13 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ReminderScreen(),
+                  ),
+                );
+              },
               title: Row(
                 children: [
                   Container(
