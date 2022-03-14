@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/main.dart';
+import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -23,7 +24,13 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditCategoryScreen(),
+                  ),
+                );
+              },
               title: Row(
                 children: [
                   Container(

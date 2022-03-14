@@ -29,7 +29,7 @@ class CategoryItem extends StatelessWidget {
           border: Border.all(
             color: isSelected
                 ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
-                :  (selectedColor ?? Theme.of(context).primaryColorDark),
+                : Theme.of(context).primaryColorDark,
           ),
           borderRadius: BorderRadius.circular(4),
         ),
@@ -41,16 +41,18 @@ class CategoryItem extends StatelessWidget {
                 category.icon!,
                 color: isSelected
                     ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
-                    : (selectedColor ?? Theme.of(context).primaryColorDark),
+                    : Theme.of(context).primaryColorDark,
               ),
             if (category.icon != null) const SizedBox(height: 2),
             if (displayLabel ?? true)
               Text(
                 category.name,
                 style: Theme.of(context).textTheme.caption?.copyWith(
-                    color: isSelected
-                        ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
-                        : (selectedColor ?? Theme.of(context).primaryColorDark),),
+                      color: isSelected
+                          ? (selectedColor ??
+                              Theme.of(context).colorScheme.secondary)
+                          : Theme.of(context).primaryColorDark,
+                    ),
               ),
           ],
         ),
