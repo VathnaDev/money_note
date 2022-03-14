@@ -13,13 +13,16 @@ class HomeScreen extends HookConsumerWidget {
   final screens = [
     const InputScreen(),
     const CalculatorScreen(),
-     ReportScreen(),
+    ReportScreen(),
     const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTab = useState(0);
+    final selectedTab = useState(3);
+
+    final activeColor = Theme.of(context).primaryColorDark;
+    final unActiveColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       body: IndexedStack(
@@ -29,8 +32,8 @@ class HomeScreen extends HookConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        unselectedItemColor: Color(0xFF404040),
-        selectedItemColor: Color(0xFF404040),
+        unselectedItemColor: unActiveColor,
+        selectedItemColor: activeColor,
         currentIndex: selectedTab.value,
         onTap: (value) {
           selectedTab.value = value;
@@ -38,23 +41,35 @@ class HomeScreen extends HookConsumerWidget {
         items: [
           BottomNavigationBarItem(
             label: "Input",
-            icon: SvgPicture.asset("assets/icons/Input-1.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Input.svg"),
+            icon: SvgPicture.asset("assets/icons/Input-1.svg",color: unActiveColor,),
+            activeIcon: SvgPicture.asset(
+              "assets/icons/Input.svg",
+              color: activeColor,
+            ),
           ),
           BottomNavigationBarItem(
             label: "Calculator",
-            icon: SvgPicture.asset("assets/icons/Calculator-1.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Calculator.svg"),
+            icon: SvgPicture.asset("assets/icons/Calculator-1.svg",color: unActiveColor,),
+            activeIcon: SvgPicture.asset(
+              "assets/icons/Calculator.svg",
+              color: activeColor,
+            ),
           ),
           BottomNavigationBarItem(
             label: "Report",
-            icon: SvgPicture.asset("assets/icons/Report-1.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Report.svg"),
+            icon: SvgPicture.asset("assets/icons/Report-1.svg",color: unActiveColor,),
+            activeIcon: SvgPicture.asset(
+              "assets/icons/Report.svg",
+              color: activeColor,
+            ),
           ),
           BottomNavigationBarItem(
             label: "Settings",
-            icon: SvgPicture.asset("assets/icons/Settings-1.svg"),
-            activeIcon: SvgPicture.asset("assets/icons/Settings.svg"),
+            icon: SvgPicture.asset("assets/icons/Settings-1.svg",color: unActiveColor,),
+            activeIcon: SvgPicture.asset(
+              "assets/icons/Settings.svg",
+              color: activeColor,
+            ),
           ),
         ],
       ),

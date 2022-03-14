@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/fake/fake_note.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
@@ -41,7 +42,7 @@ class MonthlyReportView extends HookConsumerWidget {
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(12),
                   ),
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).backgroundColor,
                 ),
                 child: TabBar(
                   indicatorColor: Colors.white,
@@ -79,12 +80,7 @@ class MonthlyReportView extends HookConsumerWidget {
 class BalanceInfo extends StatelessWidget {
   BalanceInfo({Key? key}) : super(key: key);
 
-  final boxDecoration = BoxDecoration(
-    border: Border.all(
-      color: Colors.grey,
-    ),
-    borderRadius: BorderRadius.circular(8),
-  );
+
 
   @override
   Widget build(BuildContext context) {

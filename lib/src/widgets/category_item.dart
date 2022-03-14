@@ -28,8 +28,8 @@ class CategoryItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: isSelected
-                ? (selectedColor ?? Theme.of(context).primaryColor)
-                : const Color(0xFFD9D9D9),
+                ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
+                :  (selectedColor ?? Theme.of(context).primaryColorDark),
           ),
           borderRadius: BorderRadius.circular(4),
         ),
@@ -40,8 +40,8 @@ class CategoryItem extends StatelessWidget {
               SvgPicture.asset(
                 category.icon!,
                 color: isSelected
-                    ? (selectedColor ?? Theme.of(context).primaryColor)
-                    : null,
+                    ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
+                    : (selectedColor ?? Theme.of(context).primaryColorDark),
               ),
             if (category.icon != null) const SizedBox(height: 2),
             if (displayLabel ?? true)
@@ -49,8 +49,8 @@ class CategoryItem extends StatelessWidget {
                 category.name,
                 style: Theme.of(context).textTheme.caption?.copyWith(
                     color: isSelected
-                        ? (selectedColor ?? Theme.of(context).primaryColor)
-                        : Colors.black),
+                        ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
+                        : (selectedColor ?? Theme.of(context).primaryColorDark),),
               ),
           ],
         ),

@@ -26,7 +26,7 @@ class NoteList extends StatelessWidget {
       shrinkWrap: shrinkWrap ?? false,
       groupBy: (Note note) => note.date,
       groupHeaderBuilder: (Note note) => Container(
-        color: Colors.grey[200],
+        color: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Text(note.date.toString()),
       ),
@@ -43,7 +43,10 @@ class NoteList extends StatelessWidget {
           ),
           child: Row(
             children: [
-              SvgPicture.asset(note.category.icon!),
+              SvgPicture.asset(
+                note.category.icon!,
+                color: Theme.of(context).primaryColor,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Row(

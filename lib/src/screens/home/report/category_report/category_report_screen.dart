@@ -14,6 +14,7 @@ class CategoryReportScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final textTheme = Theme.of(context).textTheme;
     var date = useState(0);
 
     return Scaffold(

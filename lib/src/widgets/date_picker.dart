@@ -34,7 +34,7 @@ class DatePicker extends HookConsumerWidget {
 
     return Material(
       borderRadius: BorderRadius.circular(9999),
-      color: const Color(0xFFF5F5F5),
+      color: Theme.of(context).backgroundColor,
       child: Container(
         padding: const EdgeInsets.all(5),
         child: Row(
