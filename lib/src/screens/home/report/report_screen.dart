@@ -40,7 +40,7 @@ class ReportScreen extends HookConsumerWidget {
                   value: 0,
                   child: Row(
                     children: [
-                      Icon(Icons.category,
+                      Icon(Icons.event,
                           color: Theme.of(context).primaryColor),
                       SizedBox(width: 16),
                       Text("Monthly"),
@@ -49,16 +49,6 @@ class ReportScreen extends HookConsumerWidget {
                 ),
                 PopupMenuItem<int>(
                   value: 1,
-                  child: Row(
-                    children: [
-                      Icon(Icons.event, color: Theme.of(context).primaryColor),
-                      SizedBox(width: 16),
-                      Text("Calendar"),
-                    ],
-                  ),
-                ),
-                PopupMenuItem<int>(
-                  value: 2,
                   child: Row(
                     children: [
                       Icon(Icons.category, color: Theme.of(context).primaryColor),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/fake/fake_note.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
+import 'package:money_note/src/widgets/input_view.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
 class MonthlyReportView extends HookConsumerWidget {
@@ -59,7 +61,17 @@ class MonthlyReportView extends HookConsumerWidget {
         ],
         body: TabBarView(
           children: [
-            NoteList(notes: fakeNotes),
+            NoteList(
+                notes: fakeNotes,
+                onNoteTap: (note) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NoteDetailScreen(
+                        note: note,
+                      ),
+                    ),
+                  );
+                }),
             NoteList(
               notes: fakeNotes
                   .where((element) => element.type == InputType.expense)
@@ -79,8 +91,6 @@ class MonthlyReportView extends HookConsumerWidget {
 
 class BalanceInfo extends StatelessWidget {
   BalanceInfo({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {

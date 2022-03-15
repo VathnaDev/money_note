@@ -11,10 +11,12 @@ class NoteList extends StatelessWidget {
     required this.notes,
     this.physics,
     this.shrinkWrap,
+    this.onNoteTap,
   }) : super(key: key);
 
   final ScrollPhysics? physics;
   final bool? shrinkWrap;
+  final Function(Note)? onNoteTap;
 
   final List<Note> notes;
 
@@ -35,38 +37,43 @@ class NoteList extends StatelessWidget {
         final isExpense = note.type == InputType.expense;
         final amount = isExpense ? "-\$${note.amount}" : "+\$${note.amount}";
 
-        return Container(
-          key: UniqueKey(),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 6,
-          ),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                note.category.icon!,
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(category.name),
-                    if (note.note != null && note.note?.isNotEmpty == true)
-                      Text(
-                        " (${note.note})",
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                  ],
+        return InkWell(
+          onTap: () {
+            onNoteTap?.call(note);
+          },
+          child: Container(
+            key: UniqueKey(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 6,
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  note.category.icon!,
+                  color: Theme.of(context).primaryColor,
                 ),
-              ),
-              Text(
-                amount,
-                style: TextStyle(
-                  color: isExpense ? colorExpense : colorIncome,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(category.name),
+                      if (note.note != null && note.note?.isNotEmpty == true)
+                        Text(
+                          " (${note.note})",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  amount,
+                  style: TextStyle(
+                    color: isExpense ? colorExpense : colorIncome,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
