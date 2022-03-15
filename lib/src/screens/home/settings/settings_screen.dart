@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/src/riverpod/settings/app_theme_state.dart';
+import 'package:money_note/src/riverpod/theme_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/currency/currency_screen.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';

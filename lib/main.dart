@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/object_box.dart';
-import 'package:money_note/src/riverpod/app_providers.dart';
-import 'package:money_note/src/riverpod/settings/app_theme_state.dart';
+import 'package:money_note/src/riverpod/providers.dart';
+import 'package:money_note/src/riverpod/theme_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -49,7 +49,33 @@ class MyApp extends HookConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: appThemeState ? ThemeMode.dark : ThemeMode.light,
-      home: HomeScreen(),
+      home: _Unfocus(
+        child: HomeScreen(),
+      ),
+    );
+  }
+}
+
+/// A widget that unfocus everything when tapped.
+///
+/// This implements the "Unfocus when tapping in empty space" behavior for the
+/// entire application.
+class _Unfocus extends HookConsumerWidget {
+  const _Unfocus({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: child,
     );
   }
 }

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:money_note/objectbox.g.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
-import 'package:money_note/src/riverpod/category_provider.dart';
+import 'package:money_note/src/riverpod/category_state.dart';
+import 'package:money_note/src/riverpod/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
-import 'package:money_note/src/utils/constants.dart';
-import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
+import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
 
 class InputView extends HookConsumerWidget {
@@ -57,6 +58,17 @@ class InputView extends HookConsumerWidget {
     void onRemoveImage(String path) {
       images.value.remove(path);
       images.value = List.from(images.value);
+    }
+
+    void onSubmit() {
+      final newNote = Note(
+        date: date,
+        amount: amount.value,
+        note: note.value,
+        type: inputType.name,
+        category: ToOne<Category>(target: category.value),
+      );
+      ref.read(notesStateProvider(null).notifier).add(newNote);
     }
 
     return SingleChildScrollView(
@@ -132,7 +144,7 @@ class InputView extends HookConsumerWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: isValid ? () {} : null,
+              onPressed: isValid ? onSubmit : null,
               child: Text(noteRecord == null ? "Submit" : "Update"),
             ),
           ],

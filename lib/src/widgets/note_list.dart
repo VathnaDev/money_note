@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class NoteList extends StatelessWidget {
@@ -26,15 +27,15 @@ class NoteList extends StatelessWidget {
       physics: physics,
       elements: notes,
       shrinkWrap: shrinkWrap ?? false,
-      groupBy: (Note note) => note.date,
+      groupBy: (Note note) => note.date.displayFormat(),
       groupHeaderBuilder: (Note note) => Container(
         color: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: Text(note.date.toString()),
+        child: Text(note.date.displayFormat()),
       ),
       itemBuilder: (context, Note note) {
         final category = note.category;
-        final isExpense = note.type == InputType.expense;
+        final isExpense = note.type == InputType.expense.name;
         final amount = isExpense ? "-\$${note.amount}" : "+\$${note.amount}";
 
         return InkWell(
@@ -60,7 +61,7 @@ class NoteList extends StatelessWidget {
                       Text(category.target!.name),
                       if (note.note != null && note.note?.isNotEmpty == true)
                         Text(
-                          " (${note.note})",
+                          " ( ${note.note} )",
                           style: Theme.of(context).textTheme.caption,
                         ),
                     ],

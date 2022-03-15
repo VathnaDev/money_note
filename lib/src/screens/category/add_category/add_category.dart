@@ -3,8 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
-import 'package:money_note/src/riverpod/app_providers.dart';
-import 'package:money_note/src/riverpod/category_provider.dart';
+import 'package:money_note/src/riverpod/category_state.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 
@@ -25,6 +24,8 @@ class AddCategory extends HookConsumerWidget {
     final isValid = name.value.isNotEmpty && category.value != null;
 
     void addNewCategory() {
+      FocusScope.of(context).unfocus();
+
       final newCategory = Category(
         name: nameTextController.text,
         type: inputType.name,

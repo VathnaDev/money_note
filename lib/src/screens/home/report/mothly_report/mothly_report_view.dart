@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/src/data/fake/fake_note.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/riverpod/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
-import 'package:money_note/src/widgets/input_view.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
 class MonthlyReportView extends HookConsumerWidget {
@@ -62,7 +61,7 @@ class MonthlyReportView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             NoteList(
-                notes: [],
+                notes: ref.watch(notesStateProvider(null)),
                 onNoteTap: (note) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -73,10 +72,14 @@ class MonthlyReportView extends HookConsumerWidget {
                   );
                 }),
             NoteList(
-              notes: [],
+              notes: ref.watch(
+                notesStateProvider(NoteFilter(type: InputType.expense.name)),
+              ),
             ),
             NoteList(
-              notes: [],
+              notes: ref.watch(
+                notesStateProvider(NoteFilter(type: InputType.income.name)),
+              ),
             ),
           ],
         ),
