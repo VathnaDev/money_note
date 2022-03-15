@@ -14,6 +14,16 @@ class MonthlyReportView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void onNoteTap(note) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => NoteDetailScreen(
+            note: note,
+          ),
+        ),
+      );
+    }
+
     return DefaultTabController(
       length: 3,
       child: NestedScrollView(
@@ -61,22 +71,17 @@ class MonthlyReportView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             NoteList(
-                notes: ref.watch(notesStateProvider(null)),
-                onNoteTap: (note) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => NoteDetailScreen(
-                        note: note,
-                      ),
-                    ),
-                  );
-                }),
+              onNoteTap: onNoteTap,
+              notes: ref.watch(notesStateProvider(null)),
+            ),
             NoteList(
+              onNoteTap: onNoteTap,
               notes: ref.watch(
                 notesStateProvider(NoteFilter(type: InputType.expense.name)),
               ),
             ),
             NoteList(
+              onNoteTap: onNoteTap,
               notes: ref.watch(
                 notesStateProvider(NoteFilter(type: InputType.income.name)),
               ),

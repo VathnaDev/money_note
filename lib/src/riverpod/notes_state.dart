@@ -37,6 +37,15 @@ class NotesState extends StateNotifier<List<Note>> {
       condition = Note_.type.equals(filter!.type!);
     }
 
+    if(filter != null && filter?.category != null){
+      final categoryQuery = Note_.category.equals(filter!.category!.id);
+      if(condition == null){
+        condition = categoryQuery;
+      }else{
+        condition.and(categoryQuery);
+      }
+    }
+
     return read(storeProvider)
         .box<Note>()
         .query(condition)

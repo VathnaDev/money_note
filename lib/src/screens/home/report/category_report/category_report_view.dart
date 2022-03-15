@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
+import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/riverpod/category_state.dart';
 import 'package:money_note/src/screens/home/report/category_report/category_report_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
@@ -13,7 +15,6 @@ class CategoryReportView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -27,12 +28,12 @@ class CategoryReportView extends HookConsumerWidget {
           const SizedBox(height: 8),
           CategoryGrid(
             physics: const NeverScrollableScrollPhysics(),
-            items: [...expenseCategories],
+            items: [...ref.watch(categoryByTypeProvider(InputType.expense))],
             selectedColor: Colors.red,
             onItemTap: (item) {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => CategoryReportScreen())
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CategoryReportScreen(category: item),
+              ));
             },
           ),
           const SizedBox(height: 28),
@@ -40,12 +41,12 @@ class CategoryReportView extends HookConsumerWidget {
           const SizedBox(height: 8),
           CategoryGrid(
             physics: const NeverScrollableScrollPhysics(),
-            items: [...incomeCategories],
+            items: [...ref.watch(categoryByTypeProvider(InputType.income))],
             selectedColor: Colors.red,
             onItemTap: (item) {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CategoryReportScreen())
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CategoryReportScreen(category: item),
+              ));
             },
           ),
         ],
