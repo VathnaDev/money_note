@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/main.dart';
+import 'package:money_note/src/riverpod/settings/app_theme_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/currency/currency_screen.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
@@ -16,8 +16,6 @@ class SettingsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final iconColor = Theme.of(context).primaryColor;
-
-    final themeProvider = ref.watch(appThemeStateNotifier);
 
     return Scaffold(
       appBar: AppBar(title: Text("Settings")),
@@ -133,11 +131,7 @@ class SettingsScreen extends HookConsumerWidget {
             child: SwitchListTile(
               activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (value) {
-                if (value) {
-                  themeProvider.setDarkTheme();
-                } else {
-                  themeProvider.setLightTheme();
-                }
+                ref.read(appThemeProvider.notifier).setIsDarkMode(value);
               },
               title: Row(
                 children: [
@@ -151,7 +145,7 @@ class SettingsScreen extends HookConsumerWidget {
                   Text("Dark Mode"),
                 ],
               ),
-              value: themeProvider.isDarkModeEnabled,
+              value: ref.watch(appThemeProvider),
             ),
           ),
           const SizedBox(height: 8),

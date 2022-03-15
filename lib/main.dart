@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/src/riverpod/theme/app_theme_state.dart';
-import 'package:money_note/src/widgets/calculator_view.dart';
-import 'package:money_note/src/screens/category/add_category/add_category.dart';
-import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
-import 'package:money_note/src/screens/currency/currency_screen.dart';
+import 'package:money_note/src/riverpod/app_providers.dart';
+import 'package:money_note/src/riverpod/settings/app_theme_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
-import 'package:money_note/src/screens/onboard/onboard_screen.dart';
-import 'package:money_note/src/screens/pin/pin_screen.dart';
-import 'package:money_note/src/screens/reminder/reminder_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'src/screens/home/report/category_report/category_report_screen.dart';
-
-final appThemeStateNotifier = ChangeNotifierProvider((ref) => AppThemeState());
-
-void main() {
-  runApp(ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  runApp(
+    ProviderScope(
+      overrides: [sharedPrefProvider.overrideWithValue(sharedPreferences)],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends HookConsumerWidget {
@@ -24,15 +22,14 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appThemeState = ref.watch(appThemeStateNotifier);
+    final appThemeState = ref.watch(appThemeProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode:
-          appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+      themeMode: appThemeState ? ThemeMode.dark : ThemeMode.light,
       home: HomeScreen(),
     );
   }
