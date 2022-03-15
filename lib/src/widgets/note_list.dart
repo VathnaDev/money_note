@@ -50,14 +50,14 @@ class NoteList extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  note.category.icon!,
+                  note.category.target!.icon!,
                   color: Theme.of(context).primaryColor,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Row(
                     children: [
-                      Text(category.name),
+                      Text(category.target!.name),
                       if (note.note != null && note.note?.isNotEmpty == true)
                         Text(
                           " (${note.note})",

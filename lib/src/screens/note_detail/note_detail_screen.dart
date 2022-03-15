@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -21,7 +22,7 @@ class NoteDetailScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          DateTime.fromMicrosecondsSinceEpoch(note.date).displayFormat(),
+          note.date.displayFormat(),
         ),
         actions: [
           TextButton(
@@ -34,7 +35,9 @@ class NoteDetailScreen extends HookConsumerWidget {
         ],
       ),
       body: InputView(
-        inputType: note.type,
+        inputType: InputType.values.singleWhere(
+          (element) => element.name == note.type,
+        ),
         noteRecord: note,
       ),
     );

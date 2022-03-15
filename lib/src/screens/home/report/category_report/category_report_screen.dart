@@ -70,7 +70,7 @@ class CategoryReportScreen extends HookConsumerWidget {
             NoteList(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              notes: fakeNotes,
+              notes: [],
             ),
           ],
         ),

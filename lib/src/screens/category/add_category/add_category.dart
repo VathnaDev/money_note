@@ -2,25 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
+import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/riverpod/app_providers.dart';
+import 'package:money_note/src/riverpod/category_provider.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 
 class AddCategory extends HookConsumerWidget {
   const AddCategory({
     Key? key,
+    required this.inputType,
   }) : super(key: key);
+
+  final InputType inputType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var nameTextController = useTextEditingController();
+    var name = useState("");
     var category = useState<Category?>(null);
+
+    final isValid = name.value.isNotEmpty && category.value != null;
+
+    void addNewCategory() {
+      final newCategory = Category(
+        name: nameTextController.text,
+        type: inputType.name,
+        icon: category.value!.icon,
+      );
+      ref.read(categoryByTypeProvider(inputType).notifier).add(newCategory);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        "Category added successfully.",
+      )));
+      nameTextController.text = "";
+      category.value = null;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Category"),
+        title: const Text("Add Category"),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.save_outlined),
+            onPressed: !isValid ? null : addNewCategory,
+            icon: const Icon(Icons.save_outlined),
           )
         ],
       ),
@@ -33,19 +59,23 @@ class AddCategory extends HookConsumerWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Category Name",
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 8),
-                TextField(
-                  decoration: InputDecoration(
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: nameTextController,
+                  onChanged: (value) {
+                    name.value = value;
+                  },
+                  decoration: const InputDecoration(
                     hintText: "Please input",
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   "Icon",
                   textAlign: TextAlign.start,
                 ),

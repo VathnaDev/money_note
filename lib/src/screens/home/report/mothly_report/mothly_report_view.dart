@@ -62,7 +62,7 @@ class MonthlyReportView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             NoteList(
-                notes: fakeNotes,
+                notes: [],
                 onNoteTap: (note) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -73,14 +73,10 @@ class MonthlyReportView extends HookConsumerWidget {
                   );
                 }),
             NoteList(
-              notes: fakeNotes
-                  .where((element) => element.type == InputType.expense)
-                  .toList(),
+              notes: [],
             ),
             NoteList(
-              notes: fakeNotes
-                  .where((element) => element.type == InputType.income)
-                  .toList(),
+              notes: [],
             ),
           ],
         ),

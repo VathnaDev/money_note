@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/riverpod/category_provider.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
@@ -29,17 +30,10 @@ class InputView extends HookConsumerWidget {
 
     var amount = useState(noteRecord?.amount ?? 0.0);
     var note = useState(noteRecord?.note ?? "");
-    var category = useState<Category?>(noteRecord?.category);
+    var category = useState<Category?>(noteRecord?.category.target);
     var images = useState<List<String>>(noteRecord?.images ?? []);
 
     final isValid = amount.value > 0 && category.value != null;
-
-    final List<Category> categories = [
-      ...(inputType == InputType.expense
-          ? expenseCategories
-          : incomeCategories),
-      Category(name: "Edit")
-    ];
 
     void onCategorySelected(Category selectedCategory) {
       category.value = selectedCategory;
@@ -127,7 +121,12 @@ class InputView extends HookConsumerWidget {
             CategoryGrid(
               padding: const EdgeInsets.symmetric(vertical: 8),
               physics: const NeverScrollableScrollPhysics(),
-              items: categories,
+              items: [
+                ...ref.watch(
+                  categoryByTypeProvider(inputType),
+                ),
+                Category(name: "Edit"),
+              ],
               selectedCategory: category.value,
               onItemTap: onCategorySelected,
             ),

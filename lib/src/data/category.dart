@@ -1,11 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:money_note/src/data/input_type.dart';
+import 'package:objectbox/objectbox.dart';
 
-part 'category.freezed.dart';
+@Entity()
+class Category {
+  int id = 0;
+  String name;
+  String? icon;
+  String? type;
 
-@freezed
-class Category with _$Category {
-  factory Category({
-    required String name,
-    String? icon,
-  }) = _Category;
+  Category({
+    required this.name,
+    this.type,
+    this.icon,
+  });
 }

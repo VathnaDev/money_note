@@ -1,1 +1,1 @@
-enum InputType { expense, income }
+enum InputType { income,expense  }

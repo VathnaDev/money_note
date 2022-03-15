@@ -1,18 +1,27 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:money_note/src/data/category.dart' ;
+import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:objectbox/objectbox.dart';
 
-part 'note.freezed.dart';
+@Entity()
+class Note {
+  int id = 0;
+  @Property(type: PropertyType.date)
+  DateTime date;
+  double amount;
+  String type;
+  ToOne<Category> category;
+  String? note;
+  List<String>? images;
 
-@freezed
-class Note with _$Note {
-  factory Note({
-    required String id,
-    required int date,
-    required double amount,
-    required Category category,
-    required InputType type,
-    String? note,
-    List<String>? images,
-  }) = _Note;
+  Note({
+    required this.date,
+    required this.amount,
+    required this.category,
+    required this.type,
+    this.note,
+    this.images,
+  });
+
+
 }
