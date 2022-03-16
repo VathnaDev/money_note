@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
-import 'package:money_note/src/riverpod/category_state.dart';
+import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/screens/home/report/category_report/category_report_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';

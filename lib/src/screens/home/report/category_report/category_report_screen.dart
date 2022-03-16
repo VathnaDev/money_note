@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/fake/fake_note.dart';
 import 'package:money_note/src/data/input_type.dart';
-import 'package:money_note/src/riverpod/notes_state.dart';
+import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';

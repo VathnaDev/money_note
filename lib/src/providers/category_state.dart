@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/objectbox.g.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
-import 'package:money_note/src/riverpod/providers.dart';
+import 'package:money_note/src/providers/providers.dart';
 
 class CategoryState extends StateNotifier<List<Category>> {
   final Reader read;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/input_type.dart';
-import 'package:money_note/src/riverpod/notes_state.dart';
+import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/date_picker.dart';

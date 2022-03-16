@@ -2,8 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/objectbox.g.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/note.dart';
-import 'package:money_note/src/riverpod/providers.dart';
-import 'package:objectbox/internal.dart';
+import 'package:money_note/src/providers/providers.dart';
 
 class NoteFilter {
   DateTime? date;
