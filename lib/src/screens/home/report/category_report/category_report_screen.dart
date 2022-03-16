@@ -5,11 +5,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/fake/fake_note.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/providers/note_category_report_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
+import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:money_note/src/widgets/currency_text.dart';
+import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
+import 'package:collection/collection.dart';
 
 class CategoryReportScreen extends HookConsumerWidget {
   CategoryReportScreen({
@@ -22,9 +27,18 @@ class CategoryReportScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    var date = useState(0);
+    var date = useState(DateTime.now());
 
-    final iconColor = category.type == InputType.income.name ? colorIncome : colorExpense;
+    final notes = ref.watch(
+      noteCategoryStateProvider(
+        NoteCategoryReportParam(date.value, category.id),
+      ),
+    );
+
+    final total = notes.map((e) => e.amount).sum;
+
+    final iconColor =
+        category.type == InputType.income.name ? colorIncome : colorExpense;
 
     void onNoteTap(note) {
       Navigator.of(context).push(
@@ -46,26 +60,13 @@ class CategoryReportScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: ToggleButtons(
-                borderWidth: 2,
-                borderRadius: BorderRadius.circular(120),
-                onPressed: (value) {
-                  date.value = value;
-                },
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text("Month"),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text("Week"),
-                  ),
-                ],
-                isSelected: List.generate(2, (index) => index == date.value),
-              ),
+            DatePicker(
+              initialDate: date.value,
+              displayFormat: MMMMyyyy,
+              incrementBy: const Duration(days: 31),
+              onDateChanged: (newDate) {
+                date.value = newDate;
+              },
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
@@ -81,18 +82,17 @@ class CategoryReportScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            Text("This Month", style: textTheme.caption),
-            Text(
-              "\$00,00",
-              style: textTheme.headline1?.copyWith(color: iconColor),
+            Text(date.value.MMMyyyyFormat(), style: textTheme.caption),
+            CurrencyText(
+              value: total,
+              colorizeText: false,
+              textStyle: textTheme.headline1?.copyWith(color: iconColor),
             ),
             NoteList(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               onNoteTap: onNoteTap,
-              notes: ref.watch(
-                notesStateProvider(NoteFilter(category: category)),
-              ),
+              notes: notes,
             ),
           ],
         ),

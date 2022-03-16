@@ -12,7 +12,7 @@ extension DateExt on DateTime {
   }
 
   String MMMyyyyFormat() {
-    final df = DateFormat('MMMyyyy');
+    final df = DateFormat(MMMMyyyy);
     return df.format(this);
   }
 

@@ -10,6 +10,26 @@ class NoteRepository {
 
   NoteRepository(this.read);
 
+  List<Note> getNotesByMonthAndCategory(DateTime date, int categoryId) {
+    final db = read(storeProvider).box<Note>();
+    final start = DateTime(date.year, date.month, 1);
+    final end = DateTime(date.year, date.month, 31);
+
+    final notes = db
+        .query(
+          Note_.date
+              .between(
+                start.millisecondsSinceEpoch,
+                end.millisecondsSinceEpoch,
+              )
+              .and(
+                Note_.category.equals(categoryId),
+              ),
+        )
+        .build();
+    return notes.find();
+  }
+
   MonthlyReport getMonthlyReport(DateTime date) {
     final db = read(storeProvider).box<Note>();
     final start = DateTime(date.year, date.month, 1);
