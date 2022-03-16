@@ -23,6 +23,8 @@ class NoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (notes.isEmpty) return const Center(child: Text("No Data"));
+
     return GroupedListView(
       physics: physics,
       elements: notes,

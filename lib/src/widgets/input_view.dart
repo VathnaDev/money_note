@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,9 +11,11 @@ import 'package:money_note/src/data/note.dart';
 import 'package:money_note/src/riverpod/category_state.dart';
 import 'package:money_note/src/riverpod/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
+import 'package:money_note/src/utils/file_util.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
+import 'package:path_provider/path_provider.dart';
 
 class InputView extends HookConsumerWidget {
   InputView({
@@ -32,7 +36,7 @@ class InputView extends HookConsumerWidget {
     var amount = useState(noteRecord?.amount ?? 0.0);
     var note = useState(noteRecord?.note ?? "");
     var category = useState<Category?>(noteRecord?.category.target);
-    var images = useState<List<String>>(noteRecord?.images ?? []);
+    var images = useState<List<String>>(List.from(noteRecord?.images ?? []));
 
     final isValid = amount.value > 0 && category.value != null;
 
@@ -50,7 +54,14 @@ class InputView extends HookConsumerWidget {
       final ImagePicker _picker = ImagePicker();
       final image = await _picker.pickImage(source: ImageSource.camera);
       if (image != null) {
-        images.value.add(image.path);
+        Directory appDocumentsDirectory =
+            await getApplicationDocumentsDirectory();
+        String appDocumentsPath = appDocumentsDirectory.path;
+        String fileName = image.path.split("/").last;
+        String savedPath = "${appDocumentsPath}/$fileName";
+        image.saveTo(savedPath);
+
+        images.value.add(savedPath);
         images.value = List.from(images.value);
       }
     }
@@ -66,6 +77,7 @@ class InputView extends HookConsumerWidget {
         amount: amount.value,
         note: note.value,
         type: inputType.name,
+        images: images.value,
         category: ToOne<Category>(target: category.value),
       );
       ref.read(notesStateProvider(null).notifier).add(newNote);
@@ -89,7 +101,7 @@ class InputView extends HookConsumerWidget {
             Text(inputType == InputType.expense ? "Expense" : "Income"),
             const SizedBox(height: 8),
             TextFormField(
-              initialValue: amount.value.toString(),
+              initialValue: amount.value == 0 ? null : amount.value.toString(),
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 if (value.isEmpty) {
@@ -144,7 +156,7 @@ class InputView extends HookConsumerWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: isValid ? onSubmit : null,
+              onPressed: isValid == true ? onSubmit : null,
               child: Text(noteRecord == null ? "Submit" : "Update"),
             ),
           ],
