@@ -1,1 +1,1 @@
-enum PinMode { set, verify, update }
+enum PinMode { set, verify, update,updatePin }

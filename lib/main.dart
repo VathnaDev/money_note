@@ -6,7 +6,7 @@ import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/object_box.dart';
 import 'package:money_note/src/providers/providers.dart';
-import 'package:money_note/src/providers/theme_state.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -41,14 +41,16 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appThemeState = ref.watch(appThemeProvider);
+    final isDarkMode = ref.watch(
+      settingsStateProvider.select((value) => value.isDarkMode),
+    );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: appThemeState ? ThemeMode.dark : ThemeMode.light,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: _Unfocus(
         child: HomeScreen(),
       ),

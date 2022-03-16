@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 
 class PinScreen extends HookConsumerWidget {
@@ -13,16 +14,43 @@ class PinScreen extends HookConsumerWidget {
   final PinMode pinMode;
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var userPin = ref.watch(
+      settingsStateProvider.select((value) => value.pinPassword),
+    );
+
     var pins = useState(['', '', '', '']);
     final pinNodes = useState(
       pins.value.map((e) => FocusNode()).toList(),
     );
 
     void onSubmit() {
-      if (pinMode == PinMode.verify) {
-        _formKey.currentState?.validate();
+      switch (pinMode) {
+        case PinMode.verify:
+          final isValid = _formKey.currentState?.validate();
+          if (isValid == true) {
+            Navigator.of(context).pop(true);
+          }
+          break;
+
+        case PinMode.set:
+          ref.read(settingsStateProvider.notifier).setPin(pins.value.join());
+          break;
+
+        case PinMode.update:
+          final isValid = _formKey.currentState?.validate();
+          if (isValid == true) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => PinScreen(pinMode: PinMode.updatePin),
+            ));
+          }
+          break;
+        case PinMode.updatePin:
+          ref.read(settingsStateProvider.notifier).setPin(pins.value.join());
+          Navigator.of(context).pop(true);
+          break;
       }
     }
 
@@ -46,7 +74,7 @@ class PinScreen extends HookConsumerWidget {
                       height: 60,
                       child: TextFormField(
                         validator: (value) {
-                          if (pins.value.join() == "1234") {
+                          if (pins.value.join() == userPin) {
                             return null;
                           } else {
                             return '';
@@ -74,8 +102,9 @@ class PinScreen extends HookConsumerWidget {
                             } else {
                               pins.value[index] = '';
                               pins.value = List.from(pins.value);
-                              if (index > 0)
+                              if (index > 0) {
                                 pinNodes.value[index - 1].requestFocus();
+                              }
                             }
                           }
                         },
@@ -92,8 +121,9 @@ class PinScreen extends HookConsumerWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: pins.value.contains("") ? null : onSubmit,
-                child:
-                    Text(pinMode == PinMode.set ? "Set PIN Password" : "Next"),
+                child: Text(
+                  pinMode == PinMode.set || pinMode ==PinMode.updatePin ? "Set PIN Password" : "Verify",
+                ),
               )
             ],
           ),

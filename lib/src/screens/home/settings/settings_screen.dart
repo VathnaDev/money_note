@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/src/providers/theme_state.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/currency/currency_screen.dart';
+import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/screens/reminder/reminder_screen.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -15,6 +16,10 @@ class SettingsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pin = ref.watch(
+      settingsStateProvider.select((value) => value.pinPassword),
+    );
+
     final iconColor = Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -78,11 +83,19 @@ class SettingsScreen extends HookConsumerWidget {
             decoration: boxDecoration,
             child: ListTile(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PinScreen(),
-                  ),
-                );
+                if (pin == null || pin.isEmpty) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PinScreen(pinMode: PinMode.set),
+                    ),
+                  );
+                }else{
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PinScreen(pinMode: PinMode.update),
+                    ),
+                  );
+                }
               },
               title: Row(
                 children: [
@@ -131,7 +144,7 @@ class SettingsScreen extends HookConsumerWidget {
             child: SwitchListTile(
               activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (value) {
-                ref.read(appThemeProvider.notifier).setIsDarkMode(value);
+                ref.read(settingsStateProvider.notifier).setIsDarkMode(value);
               },
               title: Row(
                 children: [
@@ -145,7 +158,9 @@ class SettingsScreen extends HookConsumerWidget {
                   Text("Dark Mode"),
                 ],
               ),
-              value: ref.watch(appThemeProvider),
+              value: ref.watch(
+                settingsStateProvider.select((value) => value.isDarkMode),
+              ),
             ),
           ),
           const SizedBox(height: 8),

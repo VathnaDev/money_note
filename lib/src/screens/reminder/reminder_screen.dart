@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class ReminderScreen extends HookConsumerWidget {
@@ -10,7 +11,14 @@ class ReminderScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var reminder = useState<TimeOfDay>(TimeOfDay.now());
+    var savedReminder = ref.watch(
+      settingsStateProvider.select((value) => TimeOfDay(
+            hour: value.reminder!.hour,
+            minute: value.reminder!.minute,
+          )),
+    );
+
+    var reminder = useState(savedReminder);
 
     final textStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 48,
@@ -56,7 +64,18 @@ class ReminderScreen extends HookConsumerWidget {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                final newReminder = DateTime(
+                  2022,
+                  1,
+                  1,
+                  reminder.value.hour,
+                  reminder.value.minute,
+                );
+                ref
+                    .read(settingsStateProvider.notifier)
+                    .setReminder(newReminder);
+              },
               child: const Text("Set Reminder"),
             )
           ],

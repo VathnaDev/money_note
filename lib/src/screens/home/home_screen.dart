@@ -42,7 +42,10 @@ class HomeScreen extends HookConsumerWidget {
         items: [
           BottomNavigationBarItem(
             label: "Input",
-            icon: SvgPicture.asset("assets/icons/Input-1.svg",color: unActiveColor,),
+            icon: SvgPicture.asset(
+              "assets/icons/Input-1.svg",
+              color: unActiveColor,
+            ),
             activeIcon: SvgPicture.asset(
               "assets/icons/Input.svg",
               color: activeColor,
@@ -50,7 +53,10 @@ class HomeScreen extends HookConsumerWidget {
           ),
           BottomNavigationBarItem(
             label: "Calculator",
-            icon: SvgPicture.asset("assets/icons/Calculator-1.svg",color: unActiveColor,),
+            icon: SvgPicture.asset(
+              "assets/icons/Calculator-1.svg",
+              color: unActiveColor,
+            ),
             activeIcon: SvgPicture.asset(
               "assets/icons/Calculator.svg",
               color: activeColor,
@@ -58,7 +64,10 @@ class HomeScreen extends HookConsumerWidget {
           ),
           BottomNavigationBarItem(
             label: "Report",
-            icon: SvgPicture.asset("assets/icons/Report-1.svg",color: unActiveColor,),
+            icon: SvgPicture.asset(
+              "assets/icons/Report-1.svg",
+              color: unActiveColor,
+            ),
             activeIcon: SvgPicture.asset(
               "assets/icons/Report.svg",
               color: activeColor,
@@ -66,7 +75,10 @@ class HomeScreen extends HookConsumerWidget {
           ),
           BottomNavigationBarItem(
             label: "Settings",
-            icon: SvgPicture.asset("assets/icons/Settings-1.svg",color: unActiveColor,),
+            icon: SvgPicture.asset(
+              "assets/icons/Settings-1.svg",
+              color: unActiveColor,
+            ),
             activeIcon: SvgPicture.asset(
               "assets/icons/Settings.svg",
               color: activeColor,

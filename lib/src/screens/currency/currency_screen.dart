@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/currency.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class CurrencyScreen extends HookConsumerWidget {
@@ -20,7 +21,11 @@ class CurrencyScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var currency = useState(currencies.first);
+    var currency = ref.watch(settingsStateProvider.select(
+      (value) => currencies.firstWhere(
+        (element) => element.abbreviate == value.currency,
+      ),
+    ));
 
     return Scaffold(
       appBar: AppBar(
@@ -38,8 +43,10 @@ class CurrencyScreen extends HookConsumerWidget {
           itemBuilder: (BuildContext context, int index) {
             final e = currencies[index];
             return RadioListTile<Currency>(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 2,
+                horizontal: 16,
+              ),
               title: Row(
                 children: [
                   Container(
@@ -54,9 +61,11 @@ class CurrencyScreen extends HookConsumerWidget {
                 ],
               ),
               onChanged: (value) {
-                currency.value = value!;
+                ref
+                    .read(settingsStateProvider.notifier)
+                    .setCurrency(value!.abbreviate);
               },
-              groupValue: currency.value,
+              groupValue: currency,
               value: e,
             );
           }),
