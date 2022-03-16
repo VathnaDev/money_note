@@ -3,8 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/screens/home/report/mothly_report/monthly_report_view.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:money_note/src/widgets/currency_text.dart';
 
 class NoteList extends StatelessWidget {
   NoteList({
@@ -29,16 +31,17 @@ class NoteList extends StatelessWidget {
       physics: physics,
       elements: notes,
       shrinkWrap: shrinkWrap ?? false,
-      groupBy: (Note note) => note.date.displayFormat(),
+      groupBy: (Note note) => note.date.ddMMMyyyyEEFormat(),
       groupHeaderBuilder: (Note note) => Container(
         color: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: Text(note.date.displayFormat()),
+        child: Text(
+          note.date.MMMddyyyyFormat(),
+        ),
       ),
       itemBuilder: (context, Note note) {
         final category = note.category;
         final isExpense = note.type == InputType.expense.name;
-        final amount = isExpense ? "-\$${note.amount}" : "+\$${note.amount}";
 
         return InkWell(
           onTap: () {
@@ -69,11 +72,8 @@ class NoteList extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
-                  amount,
-                  style: TextStyle(
-                    color: isExpense ? colorExpense : colorIncome,
-                  ),
+                CurrencyText(
+                  value: isExpense ? note.amount * -1 : note.amount,
                 ),
               ],
             ),

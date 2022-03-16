@@ -93,7 +93,7 @@ class InputView extends HookConsumerWidget {
             if (noteRecord == null)
               DatePicker(
                 initialDate: date,
-                onDateSelected: (selectedDate) {
+                onDateChanged: (selectedDate) {
                   date = selectedDate;
                 },
               ),

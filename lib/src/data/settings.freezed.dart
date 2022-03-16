@@ -19,7 +19,7 @@ class _$SettingsTearOff {
   const _$SettingsTearOff();
 
   _Settings call(
-      {String currency = "\$",
+      {String currency = "USD",
       bool isDarkMode = false,
       String? pinPassword,
       DateTime? reminder}) {
@@ -147,7 +147,7 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
 
 class _$_Settings implements _Settings {
   _$_Settings(
-      {this.currency = "\$",
+      {this.currency = "USD",
       this.isDarkMode = false,
       this.pinPassword,
       this.reminder});

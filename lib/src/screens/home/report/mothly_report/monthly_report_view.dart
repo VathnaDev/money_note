@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/input_type.dart';
+import 'package:money_note/src/data/monthly_report.dart';
+import 'package:money_note/src/providers/monthly_report_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
+import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:money_note/src/widgets/currency_text.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
@@ -14,6 +19,9 @@ class MonthlyReportView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var month = useState(DateTime.now());
+    final report = ref.watch(monthlyReportStateProvider(month.value));
+
     void onNoteTap(note) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -31,6 +39,7 @@ class MonthlyReportView extends HookConsumerWidget {
           SliverAppBar(
             expandedHeight: 410,
             floating: true,
+            snap: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
@@ -39,18 +48,25 @@ class MonthlyReportView extends HookConsumerWidget {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    DatePicker(initialDate: DateTime.now()),
+                    DatePicker(
+                      initialDate: month.value,
+                      displayFormat: MMMMyyyy,
+                      incrementBy: const Duration(days: 31),
+                      onDateChanged: (newDate) {
+                        month.value = newDate;
+                      },
+                    ),
                     const SizedBox(height: 16),
-                    BalanceInfo(),
+                    BalanceInfo(report: report),
                   ],
                 ),
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size(double.infinity, kToolbarHeight),
+              preferredSize: const Size(double.infinity, kToolbarHeight),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(12),
                   ),
                   color: Theme.of(context).backgroundColor,
@@ -58,7 +74,7 @@ class MonthlyReportView extends HookConsumerWidget {
                 child: TabBar(
                   indicatorColor: Theme.of(context).colorScheme.secondary,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
+                  tabs: const [
                     Tab(text: "All"),
                     Tab(text: "Expense"),
                     Tab(text: "Income"),
@@ -72,19 +88,15 @@ class MonthlyReportView extends HookConsumerWidget {
           children: [
             NoteList(
               onNoteTap: onNoteTap,
-              notes: ref.watch(notesStateProvider(null)),
+              notes: report.notes,
             ),
             NoteList(
               onNoteTap: onNoteTap,
-              notes: ref.watch(
-                notesStateProvider(NoteFilter(type: InputType.expense.name)),
-              ),
+              notes: report.expenseNotes,
             ),
             NoteList(
               onNoteTap: onNoteTap,
-              notes: ref.watch(
-                notesStateProvider(NoteFilter(type: InputType.income.name)),
-              ),
+              notes: report.incomeNotes,
             ),
           ],
         ),
@@ -94,7 +106,9 @@ class MonthlyReportView extends HookConsumerWidget {
 }
 
 class BalanceInfo extends StatelessWidget {
-  BalanceInfo({Key? key}) : super(key: key);
+  BalanceInfo({Key? key, required this.report}) : super(key: key);
+
+  final MonthlyReport report;
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +121,7 @@ class BalanceInfo extends StatelessWidget {
             children: [
               const Text("Current balance"),
               Expanded(
-                child: Text(
-                  "\$100,000,000",
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
+                child: CurrencyText(value: report.currentBalance),
               )
             ],
           ),
@@ -127,17 +135,21 @@ class BalanceInfo extends StatelessWidget {
               Row(
                 children: [
                   const Text("Income"),
-                  const Expanded(
-                    child: Text("\$100,000,000", textAlign: TextAlign.right),
+                  Expanded(
+                    child: CurrencyText(value: report.income),
                   )
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   const Text("Expense"),
-                  const Expanded(
-                    child: Text("-\$100,000,000", textAlign: TextAlign.right),
+                  Expanded(
+                    child: CurrencyText(
+                      value: report.expense * -1,
+                      colorizeText: false,
+                      textStyle: const TextStyle(color: colorExpense),
+                    ),
                   )
                 ],
               ),
@@ -153,17 +165,21 @@ class BalanceInfo extends StatelessWidget {
               Row(
                 children: [
                   const Text("Expense/Income"),
-                  const Expanded(
-                    child: Text("\$100,000,000", textAlign: TextAlign.right),
+                  Expanded(
+                    child: CurrencyText(
+                      value: report.expenseIncome,
+                    ),
                   )
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   const Text("Previous Balance"),
-                  const Expanded(
-                    child: Text("-\$100,000,000", textAlign: TextAlign.right),
+                  Expanded(
+                    child: CurrencyText(
+                      value: report.previousBalance,
+                    ),
                   )
                 ],
               ),

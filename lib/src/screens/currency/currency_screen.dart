@@ -11,20 +11,20 @@ class CurrencyScreen extends HookConsumerWidget {
   }) : super(key: key);
 
   final currencies = [
-    Currency("៛", "KHR"),
-    Currency("\$", "USD"),
-    Currency("¥", "JPY"),
-    Currency("£", "GBP"),
-    Currency("€", "ALL"),
-    Currency("лв", "BGN"),
+    Currency("\$", "USD","en_US"),
+    Currency("៛", "KHR","km_KH"),
+    Currency("¥", "JPY","ja_JP"),
+    Currency("£", "GBP","en_GB"),
+    // Currency("€", "ALL"),
+    // Currency("лв", "BGN"),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var currency = ref.watch(settingsStateProvider.select(
       (value) => currencies.firstWhere(
-        (element) => element.abbreviate == value.currency,
-      ),
+        (element) => element.locale == value.currency,
+      ) ?? currencies.first,
     ));
 
     return Scaffold(
@@ -63,7 +63,7 @@ class CurrencyScreen extends HookConsumerWidget {
               onChanged: (value) {
                 ref
                     .read(settingsStateProvider.notifier)
-                    .setCurrency(value!.abbreviate);
+                    .setCurrency(value!.locale);
               },
               groupValue: currency,
               value: e,

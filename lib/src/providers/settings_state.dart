@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsState extends StateNotifier<Settings> {
   SettingsState(this.sharedPreferences) : super(Settings()) {
     final isDark = sharedPreferences.getBool('isDarkTheme') ?? false;
-    final currency = sharedPreferences.getString('currency') ?? "USD";
+    final currency = sharedPreferences.getString('currency') ?? "en_US";
     final pinPassword = sharedPreferences.getString('pinPassword') ?? "";
     final reminder = sharedPreferences.getInt('reminder') ??
         DateTime.now().millisecondsSinceEpoch;
