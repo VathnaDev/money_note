@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/providers.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/currency/currency_screen.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/screens/reminder/reminder_screen.dart';
+import 'package:money_note/src/utils/dialog.dart';
 import 'package:money_note/src/utils/theme.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -23,7 +25,7 @@ class SettingsScreen extends HookConsumerWidget {
     final iconColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
+      appBar: AppBar(title: const Text("Settings")),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -89,7 +91,7 @@ class SettingsScreen extends HookConsumerWidget {
                       builder: (context) => PinScreen(pinMode: PinMode.set),
                     ),
                   );
-                }else{
+                } else {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => PinScreen(pinMode: PinMode.update),
@@ -167,14 +169,23 @@ class SettingsScreen extends HookConsumerWidget {
           Container(
             decoration: boxDecoration,
             child: ListTile(
-              onTap: () {},
+              onTap: () async {
+                final result = await showConfirmDialog(
+                  context: context,
+                  title: "Delete",
+                  content: "Do you want to delete all data?",
+                );
+                if(result){
+                  ref.read(noteRepositoryProvider).clear();
+                }
+              },
               title: Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.only(left: 4, right: 12),
                     child: SvgPicture.asset('assets/icons/Trash.svg'),
                   ),
-                  Text(
+                  const Text(
                     "Delete All Data",
                     style: TextStyle(color: colorRed),
                   ),

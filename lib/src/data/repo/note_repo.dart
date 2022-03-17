@@ -10,6 +10,10 @@ class NoteRepository {
 
   NoteRepository(this.read);
 
+  void clear() {
+    read(storeProvider).box<Note>().removeAll();
+  }
+
   List<Note> getNotesByMonthAndCategory(DateTime date, int categoryId) {
     final db = read(storeProvider).box<Note>();
     final start = DateTime(date.year, date.month, 1);
