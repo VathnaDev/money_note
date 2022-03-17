@@ -5,5 +5,5 @@ final pinAuthState = StateProvider<bool>((ref) {
   final pin = ref.watch(
     settingsStateProvider.select((value) => value.pinPassword),
   );
-  return pin == null;
+  return pin == null || pin.isEmpty;
 });

@@ -7,6 +7,7 @@ import 'package:money_note/src/providers/pin_state.dart';
 import 'package:money_note/src/providers/providers.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
+import 'package:money_note/src/screens/onboard/onboard_screen.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
@@ -21,7 +22,7 @@ void main() async {
   final categories = objectbox.store.box<Category>();
   if (categories.isEmpty()) {
     final expense =
-        expenseCategories.map((e) => e..type = InputType.expense.name);
+    expenseCategories.map((e) => e..type = InputType.expense.name);
     final income = incomeCategories.map((e) => e..type = InputType.income.name);
     categories.putMany([...expense, ...income]);
   }
@@ -45,6 +46,9 @@ class MyApp extends HookConsumerWidget {
     final isDarkMode = ref.watch(
       settingsStateProvider.select((value) => value.isDarkMode),
     );
+    final isFirstOpen = ref.watch(
+      settingsStateProvider.select((value) => value.isFirstOpen),
+    );
     final pinVerified = ref.watch(pinAuthState);
 
     return MaterialApp(
@@ -54,7 +58,11 @@ class MyApp extends HookConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: _Unfocus(
-        child: pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify),
+        child: isFirstOpen
+            ? OnBoardScreen()
+            : (pinVerified
+            ? HomeScreen()
+            : PinScreen(pinMode: PinMode.verify)),
       ),
     );
   }

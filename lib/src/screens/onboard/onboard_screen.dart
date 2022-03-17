@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/settings_state.dart';
 
-class OnBoardScreen extends StatelessWidget {
+class OnBoardScreen extends HookConsumerWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
 
-  void onSkip() {}
-
-  void onGetStarted() {}
-
-  void onContinue() {}
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context , WidgetRef ref) {
+    void onSkip() {
+      ref.read(settingsStateProvider.notifier).setIsFirstOpen(false);
+    }
+
+    void onGetStarted() {
+      ref.read(settingsStateProvider.notifier).setIsFirstOpen(false);
+    }
+
+    void onContinue() {
+      ref.read(settingsStateProvider.notifier).setIsFirstOpen(false);
+    }
+
     return SafeArea(
       child: Scaffold(
         body: PageView(
