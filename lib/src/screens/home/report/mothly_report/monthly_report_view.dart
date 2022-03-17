@@ -10,13 +10,25 @@ import 'package:money_note/src/widgets/currency_text.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
-class MonthlyReportView extends HookConsumerWidget {
-  MonthlyReportView({
+class MonthlyReportView extends StatefulHookConsumerWidget {
+  const MonthlyReportView({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MonthlyReportViewState createState() => _MonthlyReportViewState();
+}
+
+class _MonthlyReportViewState extends ConsumerState<MonthlyReportView> {
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(monthlyReportStateProvider.notifier).fetchReport(DateTime.now());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var month = useState(DateTime.now());
     final report = ref.watch(monthlyReportStateProvider);
 
@@ -106,6 +118,8 @@ class MonthlyReportView extends HookConsumerWidget {
     );
   }
 }
+
+
 
 class BalanceInfo extends StatelessWidget {
   BalanceInfo({Key? key, required this.report}) : super(key: key);

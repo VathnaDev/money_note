@@ -11,7 +11,6 @@ import 'package:money_note/src/data/note.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
-import 'package:money_note/src/utils/file_util.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
@@ -30,14 +29,18 @@ class InputView extends HookConsumerWidget {
   final Function? onNoteUpdated;
 
   var date = DateTime.now();
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
     var amount = useState(noteRecord?.amount ?? 0.0);
+    final amountController = useTextEditingController(
+        text: amount.value == 0 ? "" : amount.value.toString());
+
     var note = useState(noteRecord?.note ?? "");
+    final noteController = useTextEditingController(text: note.value);
+
     var category = useState<Category?>(noteRecord?.category.target);
     var images = useState<List<String>>(List.from(noteRecord?.images ?? []));
 
@@ -49,7 +52,9 @@ class InputView extends HookConsumerWidget {
       category.value = null;
       images.value = [];
 
-      _formKey.currentState?.reset();
+      amountController.text = "";
+      noteController.text = "";
+      FocusScope.of(context).unfocus();
     }
 
     void onCategorySelected(Category selectedCategory) {
@@ -83,122 +88,106 @@ class InputView extends HookConsumerWidget {
       images.value = List.from(images.value);
     }
 
-    final onSubmit = useMemoized(
-          () => () {
-            final newNote = Note(
-              date: date,
-              amount: amount.value,
-              note: note.value,
-              type: inputType.name,
-              images: images.value,
-              category: ToOne<Category>(target: category.value),
-            )..id = noteRecord?.id ?? 0;
-            ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
-            if (noteRecord != null) {
-              onNoteUpdated?.call();
-            }
-            _formKey.currentState?.reset();
-      },
-      [_formKey],
-    );
+    void onSubmit() {
+      final newNote = Note(
+        date: date,
+        amount: amount.value,
+        note: note.value,
+        type: inputType.name,
+        images: images.value,
+        category: ToOne<Category>(target: category.value),
+      )..id = noteRecord?.id ?? 0;
+      ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
+      if (noteRecord != null) {
+        onNoteUpdated?.call();
+      }
+      resetForm();
 
-    // void onSubmit() {
-    //   final newNote = Note(
-    //     date: date,
-    //     amount: amount.value,
-    //     note: note.value,
-    //     type: inputType.name,
-    //     images: images.value,
-    //     category: ToOne<Category>(target: category.value),
-    //   )..id = noteRecord?.id ?? 0;
-    //   ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
-    //   if (noteRecord != null) {
-    //     onNoteUpdated?.call();
-    //   }
-    //   resetForm();
-    // }
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Success!"),
+          backgroundColor: Colors.greenAccent[400],
+        ),
+      );
+    }
 
     return SingleChildScrollView(
       primary: true,
-      child: Form(
-        key: _formKey,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (noteRecord == null)
-                DatePicker(
-                  initialDate: date,
-                  onDateChanged: (selectedDate) {
-                    date = selectedDate;
-                  },
-                ),
-              const SizedBox(height: 12),
-              Text(inputType == InputType.expense ? "Expense" : "Income"),
-              const SizedBox(height: 8),
-              TextFormField(
-                initialValue: amount.value == 0 ? null : amount.value.toString(),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  if (value.isEmpty) {
-                    amount.value = 0;
-                  } else {
-                    amount.value = double.parse(value);
-                  }
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (noteRecord == null)
+              DatePicker(
+                initialDate: date,
+                onDateChanged: (selectedDate) {
+                  date = selectedDate;
                 },
-                decoration: const InputDecoration(
-                  hintText: "0.00",
-                  prefixIcon: Icon(
-                    Icons.attach_money,
+              ),
+            const SizedBox(height: 12),
+            Text(inputType == InputType.expense ? "Expense" : "Income"),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  amount.value = 0;
+                } else {
+                  amount.value = double.parse(value);
+                }
+              },
+              decoration: const InputDecoration(
+                hintText: "0.00",
+                prefixIcon: Icon(
+                  Icons.attach_money,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text("Note"),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: noteController,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                note.value = value;
+              },
+              decoration: InputDecoration(
+                hintText: "Please input",
+                suffixIcon: IconButton(
+                  onPressed: pickImage,
+                  icon: const Icon(
+                    Icons.camera_alt_outlined,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text("Note"),
-              const SizedBox(height: 8),
-              TextFormField(
-                initialValue: note.value,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  note.value = value;
-                },
-                decoration: InputDecoration(
-                  hintText: "Please input",
-                  suffixIcon: IconButton(
-                    onPressed: pickImage,
-                    icon: const Icon(
-                      Icons.camera_alt_outlined,
-                    ),
-                  ),
+            ),
+            const SizedBox(height: 8),
+            if (images.value.isNotEmpty)
+              ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
+            const SizedBox(height: 12),
+            const Text("Category"),
+            const SizedBox(height: 8),
+            CategoryGrid(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              physics: const NeverScrollableScrollPhysics(),
+              items: [
+                ...ref.watch(
+                  categoryByTypeProvider(inputType),
                 ),
-              ),
-              const SizedBox(height: 8),
-              if (images.value.isNotEmpty)
-                ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
-              const SizedBox(height: 12),
-              const Text("Category"),
-              const SizedBox(height: 8),
-              CategoryGrid(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                physics: const NeverScrollableScrollPhysics(),
-                items: [
-                  ...ref.watch(
-                    categoryByTypeProvider(inputType),
-                  ),
-                  Category(name: "Edit"),
-                ],
-                selectedCategory: category.value,
-                onItemTap: onCategorySelected,
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                onPressed: isValid == true ? onSubmit : null,
-                child: Text(noteRecord == null ? "Submit" : "Update"),
-              ),
-            ],
-          ),
+                Category(name: "Edit"),
+              ],
+              selectedCategory: category.value,
+              onItemTap: onCategorySelected,
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: isValid == true ? onSubmit : null,
+              child: Text(noteRecord == null ? "Submit" : "Update"),
+            ),
+          ],
         ),
       ),
     );

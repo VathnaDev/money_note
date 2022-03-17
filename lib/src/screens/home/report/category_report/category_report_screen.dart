@@ -27,10 +27,9 @@ class CategoryReportScreenState extends ConsumerState<CategoryReportScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(noteCategoryStateProvider.notifier).fetchNotes(
-          DateTime.now(),
-          widget.category.id,
-        );
+    ref
+        .read(noteCategoryStateProvider.notifier)
+        .fetchNotes(DateTime.now(), widget.category.id);
   }
 
   @override
