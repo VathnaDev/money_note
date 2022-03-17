@@ -22,12 +22,15 @@ class InputView extends HookConsumerWidget {
     Key? key,
     required this.inputType,
     this.noteRecord,
+    this.onNoteUpdated,
   }) : super(key: key);
 
   final InputType inputType;
   final Note? noteRecord;
+  final Function? onNoteUpdated;
 
   var date = DateTime.now();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,6 +42,15 @@ class InputView extends HookConsumerWidget {
     var images = useState<List<String>>(List.from(noteRecord?.images ?? []));
 
     final isValid = amount.value > 0 && category.value != null;
+
+    void resetForm() {
+      amount.value = 0;
+      note.value = "";
+      category.value = null;
+      images.value = [];
+
+      _formKey.currentState?.reset();
+    }
 
     void onCategorySelected(Category selectedCategory) {
       category.value = selectedCategory;
@@ -71,95 +83,122 @@ class InputView extends HookConsumerWidget {
       images.value = List.from(images.value);
     }
 
-    void onSubmit() {
-      final newNote = Note(
-        date: date,
-        amount: amount.value,
-        note: note.value,
-        type: inputType.name,
-        images: images.value,
-        category: ToOne<Category>(target: category.value),
-      );
-      ref.read(notesStateProvider(null).notifier).add(newNote);
-    }
+    final onSubmit = useMemoized(
+          () => () {
+            final newNote = Note(
+              date: date,
+              amount: amount.value,
+              note: note.value,
+              type: inputType.name,
+              images: images.value,
+              category: ToOne<Category>(target: category.value),
+            )..id = noteRecord?.id ?? 0;
+            ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
+            if (noteRecord != null) {
+              onNoteUpdated?.call();
+            }
+            _formKey.currentState?.reset();
+      },
+      [_formKey],
+    );
+
+    // void onSubmit() {
+    //   final newNote = Note(
+    //     date: date,
+    //     amount: amount.value,
+    //     note: note.value,
+    //     type: inputType.name,
+    //     images: images.value,
+    //     category: ToOne<Category>(target: category.value),
+    //   )..id = noteRecord?.id ?? 0;
+    //   ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
+    //   if (noteRecord != null) {
+    //     onNoteUpdated?.call();
+    //   }
+    //   resetForm();
+    // }
+
 
     return SingleChildScrollView(
       primary: true,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (noteRecord == null)
-              DatePicker(
-                initialDate: date,
-                onDateChanged: (selectedDate) {
-                  date = selectedDate;
-                },
-              ),
-            const SizedBox(height: 12),
-            Text(inputType == InputType.expense ? "Expense" : "Income"),
-            const SizedBox(height: 8),
-            TextFormField(
-              initialValue: amount.value == 0 ? null : amount.value.toString(),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                if (value.isEmpty) {
-                  amount.value = 0;
-                } else {
-                  amount.value = double.parse(value);
-                }
-              },
-              decoration: const InputDecoration(
-                hintText: "0.00",
-                prefixIcon: Icon(
-                  Icons.attach_money,
+      child: Form(
+        key: _formKey,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (noteRecord == null)
+                DatePicker(
+                  initialDate: date,
+                  onDateChanged: (selectedDate) {
+                    date = selectedDate;
+                  },
                 ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text("Note"),
-            const SizedBox(height: 8),
-            TextFormField(
-              initialValue: note.value,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                note.value = value;
-              },
-              decoration: InputDecoration(
-                hintText: "Please input",
-                suffixIcon: IconButton(
-                  onPressed: pickImage,
-                  icon: const Icon(
-                    Icons.camera_alt_outlined,
+              const SizedBox(height: 12),
+              Text(inputType == InputType.expense ? "Expense" : "Income"),
+              const SizedBox(height: 8),
+              TextFormField(
+                initialValue: amount.value == 0 ? null : amount.value.toString(),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  if (value.isEmpty) {
+                    amount.value = 0;
+                  } else {
+                    amount.value = double.parse(value);
+                  }
+                },
+                decoration: const InputDecoration(
+                  hintText: "0.00",
+                  prefixIcon: Icon(
+                    Icons.attach_money,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            if (images.value.isNotEmpty)
-              ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
-            const SizedBox(height: 12),
-            const Text("Category"),
-            const SizedBox(height: 8),
-            CategoryGrid(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              physics: const NeverScrollableScrollPhysics(),
-              items: [
-                ...ref.watch(
-                  categoryByTypeProvider(inputType),
+              const SizedBox(height: 12),
+              const Text("Note"),
+              const SizedBox(height: 8),
+              TextFormField(
+                initialValue: note.value,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  note.value = value;
+                },
+                decoration: InputDecoration(
+                  hintText: "Please input",
+                  suffixIcon: IconButton(
+                    onPressed: pickImage,
+                    icon: const Icon(
+                      Icons.camera_alt_outlined,
+                    ),
+                  ),
                 ),
-                Category(name: "Edit"),
-              ],
-              selectedCategory: category.value,
-              onItemTap: onCategorySelected,
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: isValid == true ? onSubmit : null,
-              child: Text(noteRecord == null ? "Submit" : "Update"),
-            ),
-          ],
+              ),
+              const SizedBox(height: 8),
+              if (images.value.isNotEmpty)
+                ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
+              const SizedBox(height: 12),
+              const Text("Category"),
+              const SizedBox(height: 8),
+              CategoryGrid(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                physics: const NeverScrollableScrollPhysics(),
+                items: [
+                  ...ref.watch(
+                    categoryByTypeProvider(inputType),
+                  ),
+                  Category(name: "Edit"),
+                ],
+                selectedCategory: category.value,
+                onItemTap: onCategorySelected,
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: isValid == true ? onSubmit : null,
+                child: Text(noteRecord == null ? "Submit" : "Update"),
+              ),
+            ],
+          ),
         ),
       ),
     );

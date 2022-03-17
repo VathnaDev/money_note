@@ -24,7 +24,7 @@ class CurrencyScreen extends HookConsumerWidget {
     var currency = ref.watch(settingsStateProvider.select(
       (value) => currencies.firstWhere(
         (element) => element.locale == value.currency,
-      ) ?? currencies.first,
+      ),
     ));
 
     return Scaffold(

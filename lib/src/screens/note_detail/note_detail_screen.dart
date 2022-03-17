@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/providers/monthly_report_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/input_view.dart';
-import 'package:money_note/src/widgets/note_list.dart';
 
 class NoteDetailScreen extends HookConsumerWidget {
   NoteDetailScreen({
@@ -18,7 +18,6 @@ class NoteDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,8 +37,11 @@ class NoteDetailScreen extends HookConsumerWidget {
         ],
       ),
       body: InputView(
+        onNoteUpdated: () {
+          Navigator.of(context).pop();
+        },
         inputType: InputType.values.singleWhere(
-          (element) => element.name == note.type,
+              (element) => element.name == note.type,
         ),
         noteRecord: note,
       ),

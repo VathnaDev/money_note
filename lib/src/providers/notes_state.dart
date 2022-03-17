@@ -20,7 +20,7 @@ class NotesState extends StateNotifier<List<Note>> {
   Reader read;
   NoteFilter? filter;
 
-  void add(Note note) {
+  void insertOrUpdate(Note note) {
     read(storeProvider).box<Note>().put(note);
     state = [..._queryNotes()];
   }

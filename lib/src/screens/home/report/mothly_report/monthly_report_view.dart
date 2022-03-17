@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/monthly_report.dart';
 import 'package:money_note/src/providers/monthly_report_state.dart';
-import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/note_detail/note_detail_screen.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
@@ -20,7 +18,11 @@ class MonthlyReportView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var month = useState(DateTime.now());
-    final report = ref.watch(monthlyReportStateProvider(month.value));
+    final report = ref.watch(monthlyReportStateProvider);
+
+    month.addListener(() {
+      ref.read(monthlyReportStateProvider.notifier).fetchReport(month.value);
+    });
 
     void onNoteTap(note) {
       Navigator.of(context).push(

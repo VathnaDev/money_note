@@ -2,26 +2,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/note.dart';
 import 'package:money_note/src/providers/providers.dart';
 
-class NoteCategoryReportParam {
-  DateTime dateTime;
-  int categoryId;
-
-  NoteCategoryReportParam(this.dateTime, this.categoryId);
-}
-
 class NoteCategoryReport extends StateNotifier<List<Note>> {
-  Reader read;
-  NoteCategoryReportParam param;
+  Ref ref;
 
-  NoteCategoryReport(this.read, this.param) : super([]) {
-    state = read(noteRepositoryProvider).getNotesByMonthAndCategory(
-      param.dateTime,
-      param.categoryId,
-    );
+  NoteCategoryReport(this.ref) : super([]);
+
+  void fetchNotes(DateTime dateTime, int categoryId) {
+    ref.watch(storeProvider).box<Note>().query().watch().listen((event) {
+      state = ref
+          .watch(noteRepositoryProvider)
+          .getNotesByMonthAndCategory(dateTime, categoryId);
+    });
+
+    state = ref
+        .watch(noteRepositoryProvider)
+        .getNotesByMonthAndCategory(dateTime, categoryId);
   }
 }
 
-final noteCategoryStateProvider = StateNotifierProvider.family<
-    NoteCategoryReport, List<Note>, NoteCategoryReportParam>(
-  (ref, param) => NoteCategoryReport(ref.read, param),
+final noteCategoryStateProvider =
+    StateNotifierProvider.autoDispose<NoteCategoryReport, List<Note>>(
+  (ref) => NoteCategoryReport(ref),
 );
