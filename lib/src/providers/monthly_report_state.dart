@@ -6,10 +6,7 @@ import 'package:money_note/src/providers/providers.dart';
 class MonthlyReportState extends StateNotifier<MonthlyReport> {
   Ref ref;
 
-  MonthlyReportState(this.ref) : super(MonthlyReport()) {
-    final repo = ref.watch(noteRepositoryProvider);
-    state = repo.getMonthlyReport(DateTime.now());
-  }
+  MonthlyReportState(this.ref) : super(MonthlyReport()) ;
 
   void fetchReport(DateTime date){
     ref.watch(storeProvider).box<Note>().query().watch().listen((event) {
@@ -24,6 +21,6 @@ class MonthlyReportState extends StateNotifier<MonthlyReport> {
 }
 
 final monthlyReportStateProvider =
-    StateNotifierProvider<MonthlyReportState, MonthlyReport>(
+    StateNotifierProvider.autoDispose<MonthlyReportState, MonthlyReport>(
   (ref) => MonthlyReportState(ref),
 );

@@ -1,12 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/object_box.dart';
+import 'package:money_note/src/providers/pin_state.dart';
 import 'package:money_note/src/providers/providers.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
+import 'package:money_note/src/screens/pin/pin_mode.dart';
+import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +45,7 @@ class MyApp extends HookConsumerWidget {
     final isDarkMode = ref.watch(
       settingsStateProvider.select((value) => value.isDarkMode),
     );
+    final pinVerified = ref.watch(pinAuthState);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -51,7 +54,7 @@ class MyApp extends HookConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: _Unfocus(
-        child: HomeScreen(),
+        child: pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify),
       ),
     );
   }

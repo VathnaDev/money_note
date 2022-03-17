@@ -10,27 +10,19 @@ import 'package:money_note/src/widgets/currency_text.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
 
-class MonthlyReportView extends StatefulHookConsumerWidget {
-  const MonthlyReportView({
-    Key? key,
-  }) : super(key: key);
-
+class MonthlyReportView extends HookConsumerWidget {
   @override
-  _MonthlyReportViewState createState() => _MonthlyReportViewState();
-}
-
-class _MonthlyReportViewState extends ConsumerState<MonthlyReportView> {
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(monthlyReportStateProvider.notifier).fetchReport(DateTime.now());
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var month = useState(DateTime.now());
     final report = ref.watch(monthlyReportStateProvider);
+
+    useEffect(() {
+      Future.microtask(() => {
+            ref
+                .read(monthlyReportStateProvider.notifier)
+                .fetchReport(DateTime.now())
+          });
+    }, []);
 
     month.addListener(() {
       ref.read(monthlyReportStateProvider.notifier).fetchReport(month.value);
@@ -53,7 +45,6 @@ class _MonthlyReportViewState extends ConsumerState<MonthlyReportView> {
           SliverAppBar(
             expandedHeight: 410,
             floating: true,
-            snap: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
@@ -118,8 +109,6 @@ class _MonthlyReportViewState extends ConsumerState<MonthlyReportView> {
     );
   }
 }
-
-
 
 class BalanceInfo extends StatelessWidget {
   BalanceInfo({Key? key, required this.report}) : super(key: key);

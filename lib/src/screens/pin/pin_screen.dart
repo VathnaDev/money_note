@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/pin_state.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 
@@ -31,7 +32,7 @@ class PinScreen extends HookConsumerWidget {
         case PinMode.verify:
           final isValid = _formKey.currentState?.validate();
           if (isValid == true) {
-            Navigator.of(context).pop(true);
+            ref.watch(pinAuthState.state).state = true;
           }
           break;
 
