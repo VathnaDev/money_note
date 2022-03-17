@@ -36,7 +36,7 @@ class CategoryGrid extends StatelessWidget {
         ...items.map(
           (e) => CategoryItem(
             category: e,
-            isSelected: selectedCategory == e,
+            isSelected: selectedCategory?.id == e.id,
             onItemTap: onItemTap,
             selectedColor: selectedColor,
             displayLabel: displayLabel,
