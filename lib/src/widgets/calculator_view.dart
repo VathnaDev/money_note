@@ -112,31 +112,36 @@ class CalculatorView extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      CalculatorButton(text: "7", onTap: onButtonTap),
-                      CalculatorButton(text: "8", onTap: onButtonTap),
-                      CalculatorButton(text: "9", onTap: onButtonTap),
-                      CalculatorButton(
-                          text: "+", textColor: colorBlue, onTap: onButtonTap),
-                      CalculatorButton(
-                          text: "AC", textColor: colorRed, onTap: onButtonTap),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      CalculatorButton(text: "4", onTap: onButtonTap),
-                      CalculatorButton(text: "5", onTap: onButtonTap),
-                      CalculatorButton(text: "6", onTap: onButtonTap),
-                      CalculatorButton(
-                          text: "-", textColor: colorBlue, onTap: onButtonTap),
-                      CalculatorButton(
-                          text: "Del", textColor: colorRed, onTap: onButtonTap),
-                    ],
+                  Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        CalculatorButton(text: "7", onTap: onButtonTap),
+                        CalculatorButton(text: "8", onTap: onButtonTap),
+                        CalculatorButton(text: "9", onTap: onButtonTap),
+                        CalculatorButton(
+                            text: "+", textColor: colorBlue, onTap: onButtonTap),
+                        CalculatorButton(
+                            text: "AC", textColor: colorRed, onTap: onButtonTap),
+                      ],
+                    ),
                   ),
                   Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        CalculatorButton(text: "4", onTap: onButtonTap),
+                        CalculatorButton(text: "5", onTap: onButtonTap),
+                        CalculatorButton(text: "6", onTap: onButtonTap),
+                        CalculatorButton(
+                            text: "-", textColor: colorBlue, onTap: onButtonTap),
+                        CalculatorButton(
+                            text: "Del", textColor: colorRed, onTap: onButtonTap),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
                     child: Row(
                       children: [
                         Expanded(
