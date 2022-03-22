@@ -22,6 +22,7 @@ class EditCategoryScreen extends HookConsumerWidget {
           builder: (context) => AddCategory(
             inputType: type,
           ),
+          fullscreenDialog: true,
         ),
       );
     }
