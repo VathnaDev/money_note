@@ -64,7 +64,13 @@ class CategoryReportScreenState extends ConsumerState<CategoryReportScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.category.name),
+        title: Material(
+          type: MaterialType.transparency,
+          child: Text(
+            widget.category.name,
+            style: textTheme.headline6,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         primary: true,

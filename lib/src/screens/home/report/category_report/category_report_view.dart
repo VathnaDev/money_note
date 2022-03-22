@@ -41,9 +41,11 @@ class CategoryReportView extends HookConsumerWidget {
             items: [...ref.watch(categoryByTypeProvider(InputType.income))],
             selectedColor: Colors.red,
             onItemTap: (item) {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CategoryReportScreen(category: item),
-              ));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CategoryReportScreen(category: item),
+                ),
+              );
             },
           ),
         ],

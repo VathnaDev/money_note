@@ -22,6 +22,4 @@ class Note {
     this.note,
     this.images,
   });
-
-
 }
