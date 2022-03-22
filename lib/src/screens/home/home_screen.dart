@@ -6,7 +6,6 @@ import 'package:money_note/src/screens/home/calculator/calculator_screen.dart';
 import 'package:money_note/src/screens/home/input/input_screen.dart';
 import 'package:money_note/src/screens/home/report/report_screen.dart';
 import 'package:money_note/src/screens/home/settings/settings_screen.dart';
-import 'package:money_note/src/widgets/animated_indexed_stack.dart';
 
 class HomeScreen extends HookConsumerWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -26,10 +25,9 @@ class HomeScreen extends HookConsumerWidget {
     final unActiveColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      body: IndexedStack(
-        key: Key(selectedTab.value.toString()),
-        children: screens,
-        index: selectedTab.value,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: screens[selectedTab.value],
       ),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
