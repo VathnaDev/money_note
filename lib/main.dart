@@ -22,7 +22,7 @@ void main() async {
   final categories = objectbox.store.box<Category>();
   if (categories.isEmpty()) {
     final expense =
-    expenseCategories.map((e) => e..type = InputType.expense.name);
+        expenseCategories.map((e) => e..type = InputType.expense.name);
     final income = incomeCategories.map((e) => e..type = InputType.income.name);
     categories.putMany([...expense, ...income]);
   }
@@ -60,9 +60,7 @@ class MyApp extends HookConsumerWidget {
       home: _Unfocus(
         child: isFirstOpen
             ? OnBoardScreen()
-            : (pinVerified
-            ? HomeScreen()
-            : PinScreen(pinMode: PinMode.verify)),
+            : (pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify)),
       ),
     );
   }

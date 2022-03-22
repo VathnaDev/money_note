@@ -90,7 +90,10 @@ class AddCategory extends HookConsumerWidget {
                 right: 16,
                 bottom: 20,
               ),
-              items: allCategories,
+              items: allCategories.map((e) {
+                e.id = DateTime.now().microsecondsSinceEpoch;
+                return e;
+              }).toList(),
               selectedCategory: category.value,
               displayLabel: false,
               onItemTap: (value) {

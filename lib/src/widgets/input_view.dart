@@ -165,8 +165,14 @@ class InputView extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
-            if (images.value.isNotEmpty)
-              ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              child: images.value.isNotEmpty
+                  ? ImageGrid(imagesPath: images.value, onRemove: onRemoveImage)
+                  : Container(),
+            ),
+            // if (images.value.isNotEmpty)
+            //   ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
             const SizedBox(height: 12),
             const Text("Category"),
             const SizedBox(height: 8),
