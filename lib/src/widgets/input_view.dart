@@ -8,9 +8,13 @@ import 'package:money_note/objectbox.g.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
+import 'package:money_note/src/data/settings.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
+import 'package:money_note/src/screens/home/settings/settings_screen.dart';
+import 'package:money_note/src/screens/success/success_screen.dart';
+import 'package:money_note/src/utils/circle_reveal_clipper.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
@@ -57,6 +61,7 @@ class InputView extends HookConsumerWidget {
 
     final noteFocusNode = useFocusNode();
     final noteExpended = useState(false);
+    final isSubmitting = useState(false);
 
     useEffect(() {
       amountFocusNode.addListener(() {
@@ -115,27 +120,29 @@ class InputView extends HookConsumerWidget {
       images.value = List.from(images.value);
     }
 
-    void onSubmit() {
-      final newNote = Note(
-        date: date,
-        amount: amount.value,
-        note: note.value,
-        type: inputType.name,
-        images: images.value,
-        category: ToOne<Category>(target: category.value),
-      )..id = noteRecord?.id ?? 0;
-      ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
-      if (noteRecord != null) {
-        onNoteUpdated?.call();
-      }
-      resetForm();
+    void onSubmit() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      isSubmitting.value = true;
+      Future.delayed(Duration(milliseconds: 400), () async {
+        final newNote = Note(
+          date: date,
+          amount: amount.value,
+          note: note.value,
+          type: inputType.name,
+          images: images.value,
+          category: ToOne<Category>(target: category.value),
+        )..id = noteRecord?.id ?? 0;
+        ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Success!"),
-          backgroundColor: Colors.greenAccent[400],
-        ),
-      );
+        await Navigator.push(context, _createRoute());
+        Future.delayed(Duration(milliseconds: 500), () {
+          isSubmitting.value = false;
+          if (noteRecord != null) {
+            onNoteUpdated?.call();
+          }
+          resetForm();
+        });
+      });
     }
 
     return SingleChildScrollView(
@@ -143,7 +150,7 @@ class InputView extends HookConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (noteRecord == null)
               DatePicker(
@@ -209,8 +216,6 @@ class InputView extends HookConsumerWidget {
                   ? ImageGrid(imagesPath: images.value, onRemove: onRemoveImage)
                   : Container(),
             ),
-            // if (images.value.isNotEmpty)
-            //   ImageGrid(imagesPath: images.value, onRemove: onRemoveImage),
             const SizedBox(height: 12),
             const Text("Category"),
             const SizedBox(height: 8),
@@ -227,13 +232,52 @@ class InputView extends HookConsumerWidget {
               onItemTap: onCategorySelected,
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: isValid == true ? onSubmit : null,
-              child: Text(noteRecord == null ? "Submit" : "Update"),
+            Align(
+              alignment: Alignment.center,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: 48,
+                width:
+                    isSubmitting.value ? 48 : MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: isValid == true ? onSubmit : null,
+                  child: isSubmitting.value
+                      ? CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        )
+                      : Text(noteRecord == null ? "Submit" : "Update"),
+                ),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 300),
+      reverseTransitionDuration: Duration(milliseconds: 500),
+      opaque: false,
+      barrierDismissible: false,
+      pageBuilder: (context, animation, secondaryAnimation) => SuccessScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var screenSize = MediaQuery.of(context).size;
+        Offset center =
+            Offset(screenSize.width / 2 - 40, screenSize.height - 100);
+        double beginRadius = 0.0;
+        double endRadius = screenSize.height * 1.2;
+
+        var tween = Tween(begin: beginRadius, end: endRadius);
+        var radiusTweenAnimation = animation.drive(tween);
+
+        return ClipPath(
+          clipper: CircleRevealClipper(
+              radius: radiusTweenAnimation.value, center: center),
+          child: child,
+        );
+      },
     );
   }
 }

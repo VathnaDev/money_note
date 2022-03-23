@@ -28,12 +28,10 @@ class SettingsState extends StateNotifier<Settings> {
     state = state.copyWith(isDarkMode: isDarkMode);
   }
 
-
   void setIsFirstOpen(bool isFirstOpen) async {
     await sharedPreferences.setBool('isFirstOpen', isFirstOpen);
     state = state.copyWith(isFirstOpen: isFirstOpen);
   }
-
 
   void setCurrency(String currency) async {
     await sharedPreferences.setString('currency', currency);
@@ -51,7 +49,8 @@ class SettingsState extends StateNotifier<Settings> {
   }
 }
 
-final settingsStateProvider = StateNotifierProvider<SettingsState, Settings>((ref) {
+final settingsStateProvider =
+    StateNotifierProvider<SettingsState, Settings>((ref) {
   final pref = ref.watch(sharedPrefProvider);
   return SettingsState(pref);
 });

@@ -10,6 +10,7 @@ import 'package:money_note/src/screens/home/home_screen.dart';
 import 'package:money_note/src/screens/onboard/onboard_screen.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
+import 'package:money_note/src/screens/success/success_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +58,7 @@ class MyApp extends HookConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      // home: SuccessScreen(),
       home: _Unfocus(
         child: isFirstOpen
             ? OnBoardScreen()
