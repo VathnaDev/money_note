@@ -46,6 +46,33 @@ class InputView extends HookConsumerWidget {
 
     final isValid = amount.value > 0 && category.value != null;
 
+    //Animation
+    final amountFocusNode = useFocusNode();
+    final dollarScaleAnimation = useAnimationController(
+      duration: Duration(seconds: 1),
+      initialValue: 1,
+      upperBound: 1,
+      lowerBound: 0.4,
+    );
+
+    final noteFocusNode = useFocusNode();
+    final noteExpended = useState(false);
+
+    useEffect(() {
+      amountFocusNode.addListener(() {
+        if (amountFocusNode.hasFocus) {
+          dollarScaleAnimation.repeat(reverse: true);
+        } else {
+          dollarScaleAnimation.reset();
+          dollarScaleAnimation.value = dollarScaleAnimation.upperBound;
+        }
+      });
+
+      noteFocusNode.addListener(() {
+        noteExpended.value = noteFocusNode.hasFocus;
+      });
+    }, [amountFocusNode, noteFocusNode]);
+
     void resetForm() {
       amount.value = 0;
       note.value = "";
@@ -130,6 +157,7 @@ class InputView extends HookConsumerWidget {
             const SizedBox(height: 8),
             TextFormField(
               controller: amountController,
+              focusNode: amountFocusNode,
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 if (value.isEmpty) {
@@ -138,28 +166,38 @@ class InputView extends HookConsumerWidget {
                   amount.value = double.parse(value);
                 }
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "0.00",
-                prefixIcon: Icon(
-                  Icons.attach_money,
+                prefixIcon: ScaleTransition(
+                  scale: dollarScaleAnimation,
+                  child: Icon(
+                    Icons.attach_money,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 12),
             const Text("Note"),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: noteController,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                note.value = value;
-              },
-              decoration: InputDecoration(
-                hintText: "Please input",
-                suffixIcon: IconButton(
-                  onPressed: pickImage,
-                  icon: const Icon(
-                    Icons.camera_alt_outlined,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.linearToEaseOut,
+              height: noteExpended.value ? 50 * 2.5 : 50,
+              child: TextFormField(
+                focusNode: noteFocusNode,
+                controller: noteController,
+                keyboardType: TextInputType.text,
+                textAlignVertical: TextAlignVertical.top,
+                expands: true,
+                maxLines: null,
+                onChanged: (value) {
+                  note.value = value;
+                },
+                decoration: InputDecoration(
+                  hintText: "Please input",
+                  suffixIcon: IconButton(
+                    onPressed: pickImage,
+                    icon: const Icon(Icons.camera),
                   ),
                 ),
               ),

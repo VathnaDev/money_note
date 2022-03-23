@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 
-class CategoryItem extends StatelessWidget {
+class CategoryItem extends HookConsumerWidget {
   CategoryItem({
     Key? key,
     required this.category,
@@ -19,9 +23,17 @@ class CategoryItem extends StatelessWidget {
   final Function(Category)? onItemTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final rotateAnimation = useAnimationController(
+      duration: Duration(milliseconds: 500),
+      initialValue: 1,
+      upperBound: 1,
+      lowerBound: 0.5,
+    );
     return InkWell(
       onTap: () {
+        rotateAnimation.reset();
+        rotateAnimation.forward();
         onItemTap?.call(category);
       },
       child: Container(
@@ -37,11 +49,15 @@ class CategoryItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (category.icon != null)
-              SvgPicture.asset(
-                category.icon!,
-                color: isSelected
-                    ? (selectedColor ?? Theme.of(context).colorScheme.secondary)
-                    : Theme.of(context).primaryColorDark,
+              ScaleTransition(
+                scale: rotateAnimation,
+                child: SvgPicture.asset(
+                  category.icon!,
+                  color: isSelected
+                      ? (selectedColor ??
+                          Theme.of(context).colorScheme.secondary)
+                      : Theme.of(context).primaryColorDark,
+                ),
               ),
             if (category.icon != null) const SizedBox(height: 2),
             if (displayLabel ?? true)
