@@ -8,11 +8,9 @@ import 'package:money_note/objectbox.g.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
-import 'package:money_note/src/data/settings.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
-import 'package:money_note/src/screens/home/settings/settings_screen.dart';
 import 'package:money_note/src/screens/success/success_screen.dart';
 import 'package:money_note/src/utils/circle_reveal_clipper.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
@@ -267,7 +265,7 @@ class InputView extends HookConsumerWidget {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      transitionDuration: Duration(milliseconds: 300),
+      transitionDuration: Duration(milliseconds: 250),
       reverseTransitionDuration: Duration(milliseconds: 500),
       opaque: false,
       barrierDismissible: false,

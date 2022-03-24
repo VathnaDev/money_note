@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/utils/color.dart';
 
 class SuccessScreen extends StatefulHookConsumerWidget {
   const SuccessScreen({Key? key}) : super(key: key);
@@ -13,12 +14,13 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
   @override
   Widget build(BuildContext context) {
     final position = Tween(
-      begin: Offset(0.0, 1.0),
-      end: Offset(0.0, 0.0),
+      begin: Offset(0, 2),
+      end: Offset(0.0, 0),
     );
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      backgroundColor: Color(0xFF1E1F2E),
       body: Container(
         padding: const EdgeInsets.all(40),
         child: Column(
@@ -31,7 +33,7 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                   SlideTransition(
                     position: position.animate(
                       useAnimationController(
-                          duration: Duration(milliseconds: 300))
+                          duration: Duration(milliseconds: 500))
                         ..forward(),
                     ),
                     child: Center(
@@ -43,9 +45,12 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                   ),
                   SizedBox(height: 25),
                   SlideTransition(
-                    position: position.animate(
+                    position: Tween(
+                      begin: Offset(0, 4),
+                      end: Offset(0.0, 0),
+                    ).animate(
                       useAnimationController(
-                          duration: Duration(milliseconds: 300))
+                          duration: Duration(milliseconds: 500))
                         ..forward(),
                     ),
                     child: Text(
