@@ -51,6 +51,10 @@ class InputView extends HookConsumerWidget {
     final isValid = amount.value > 0 && category.value != null;
 
     //Animation
+    final cameraIconAnimation = useAnimationController(
+      duration: const Duration(milliseconds: 350),
+    );
+
     final amountFocusNode = useFocusNode();
     final dollarScaleAnimation = useAnimationController(
       duration: Duration(seconds: 1),
@@ -100,6 +104,9 @@ class InputView extends HookConsumerWidget {
     }
 
     void pickImage() async {
+      cameraIconAnimation.reset();
+      cameraIconAnimation.forward();
+
       final ImagePicker _picker = ImagePicker();
       final image = await _picker.pickImage(source: ImageSource.camera);
       if (image != null) {
@@ -202,9 +209,12 @@ class InputView extends HookConsumerWidget {
                 },
                 decoration: InputDecoration(
                   hintText: "Please input",
-                  suffixIcon: IconButton(
-                    onPressed: pickImage,
-                    icon: const Icon(Icons.camera),
+                  suffixIcon: RotationTransition(
+                    turns: cameraIconAnimation,
+                    child: IconButton(
+                      onPressed: pickImage,
+                      icon: const Icon(Icons.camera),
+                    ),
                   ),
                 ),
               ),
