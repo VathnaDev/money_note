@@ -13,10 +13,6 @@ class SuccessScreen extends StatefulHookConsumerWidget {
 class _SuccessScreenState extends ConsumerState<SuccessScreen> {
   @override
   Widget build(BuildContext context) {
-    final position = Tween(
-      begin: Offset(0, 2),
-      end: Offset(0.0, 0),
-    );
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -31,15 +27,31 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   SlideTransition(
-                    position: position.animate(
+                    position: Tween(
+                      begin: Offset(0, 2),
+                      end: Offset(0.0, 0),
+                    ).animate(
                       useAnimationController(
                           duration: Duration(milliseconds: 500))
                         ..forward(),
                     ),
-                    child: Center(
-                      child: Image.asset(
-                        "assets/icons/check.png",
-                        width: 200,
+                    child: ScaleTransition(
+                      scale: Tween(begin: 0.5, end: 1.0).animate(
+                        useAnimationController(
+                          duration: Duration(milliseconds: 500),
+                        )..forward(),
+                      ),
+                      child: FadeTransition(
+                        opacity: Tween(begin: 0.0, end: 1.0).animate(
+                          useAnimationController(duration: Duration(seconds: 1))
+                            ..forward(),
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            "assets/icons/check.png",
+                            width: 200,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -50,13 +62,20 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                       end: Offset(0.0, 0),
                     ).animate(
                       useAnimationController(
-                          duration: Duration(milliseconds: 500))
-                        ..forward(),
+                        duration: Duration(milliseconds: 500),
+                      )..forward(),
                     ),
-                    child: Text(
-                      "Transaction Save\nSuccessfully",
-                      textAlign: TextAlign.center,
-                      style: textTheme.headline5,
+                    child: FadeTransition(
+                      opacity: Tween(begin: 0.0, end: 1.0).animate(
+                        useAnimationController(
+                          duration: Duration(seconds: 1),
+                        )..forward(),
+                      ),
+                      child: Text(
+                        "Transaction Save\nSuccessfully",
+                        textAlign: TextAlign.center,
+                        style: textTheme.headline5,
+                      ),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -72,7 +91,7 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                   begin: 48,
                   end: MediaQuery.of(context).size.width,
                 ),
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 500),
                 builder: (_, double width, __) {
                   return SizedBox(
                     width: width,
