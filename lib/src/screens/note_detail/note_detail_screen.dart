@@ -41,7 +41,7 @@ class NoteDetailScreen extends HookConsumerWidget {
           Navigator.of(context).pop();
         },
         inputType: InputType.values.singleWhere(
-              (element) => element.name == note.type,
+          (element) => element.name == note.type,
         ),
         noteRecord: note,
       ),

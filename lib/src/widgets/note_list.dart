@@ -1,12 +1,15 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
 import 'package:money_note/src/screens/home/report/mothly_report/monthly_report_view.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/currency_text.dart';
+import 'package:objectbox/src/relations/to_one.dart';
 
 class NoteList extends StatelessWidget {
   NoteList({
@@ -19,7 +22,7 @@ class NoteList extends StatelessWidget {
 
   final ScrollPhysics? physics;
   final bool? shrinkWrap;
-  final Function(Note)? onNoteTap;
+  final Widget Function(Note)? onNoteTap;
 
   final List<Note> notes;
 
@@ -40,46 +43,72 @@ class NoteList extends StatelessWidget {
         ),
       ),
       itemBuilder: (context, Note note) {
-        final category = note.category;
-        final isExpense = note.type == InputType.expense.name;
-
-        return InkWell(
-          onTap: () {
-            onNoteTap?.call(note);
-          },
-          child: Container(
-            key: UniqueKey(),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 6,
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  note.category.target!.icon!,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text(category.target!.name),
-                      if (note.note != null && note.note?.isNotEmpty == true)
-                        Text(
-                          " ( ${note.note} )",
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                    ],
-                  ),
-                ),
-                CurrencyText(
-                  value: isExpense ? note.amount * -1 : note.amount,
-                ),
-              ],
-            ),
+        return OpenContainer(
+          transitionType: ContainerTransitionType.fadeThrough,
+          middleColor: Theme.of(context).backgroundColor,
+          closedColor: Theme.of(context).backgroundColor,
+          openColor: Theme.of(context).backgroundColor,
+          closedBuilder: (context, action) => NoteListItem(
+            note: note,
           ),
+          openBuilder: (context, action) =>
+              onNoteTap?.call(note) ?? Container(),
         );
+
+        // return NoteListItem(
+        //   onNoteTap: onNoteTap,
+        //   note: note,
+        // );
       },
+    );
+  }
+}
+
+class NoteListItem extends StatelessWidget {
+  const NoteListItem({
+    Key? key,
+    required this.note,
+  }) : super(key: key);
+
+  final Note note;
+
+  @override
+  Widget build(BuildContext context) {
+    final category = note.category;
+    final isExpense = note.type == InputType.expense.name;
+
+    return Material(
+      child: Container(
+        key: UniqueKey(),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 6,
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              note.category.target!.icon!,
+              color: Theme.of(context).primaryColor,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Row(
+                children: [
+                  Text(category.target!.name),
+                  if (note.note != null && note.note?.isNotEmpty == true)
+                    Text(
+                      " ( ${note.note} )",
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                ],
+              ),
+            ),
+            CurrencyText(
+              value: isExpense ? note.amount * -1 : note.amount,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -92,15 +92,15 @@ class MonthlyReportView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             NoteList(
-              onNoteTap: onNoteTap,
+              onNoteTap: (note) => NoteDetailScreen(note: note),
               notes: report.notes,
             ),
             NoteList(
-              onNoteTap: onNoteTap,
+              onNoteTap: (note) => NoteDetailScreen(note: note),
               notes: report.expenseNotes,
             ),
             NoteList(
-              onNoteTap: onNoteTap,
+              onNoteTap: (note) => NoteDetailScreen(note: note),
               notes: report.incomeNotes,
             ),
           ],

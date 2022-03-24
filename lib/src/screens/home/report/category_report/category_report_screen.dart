@@ -52,16 +52,6 @@ class CategoryReportScreenState extends ConsumerState<CategoryReportScreen> {
           );
     });
 
-    void onNoteTap(note) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => NoteDetailScreen(
-            note: note,
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Material(
@@ -109,7 +99,7 @@ class CategoryReportScreenState extends ConsumerState<CategoryReportScreen> {
             NoteList(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              onNoteTap: onNoteTap,
+              onNoteTap: (note) => NoteDetailScreen(note: note),
               notes: notes,
             ),
           ],
