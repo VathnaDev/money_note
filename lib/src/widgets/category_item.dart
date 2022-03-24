@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,11 +26,7 @@ class CategoryItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final rotateAnimation = useAnimationController(
-      duration: Duration(milliseconds: 500),
-      initialValue: 1,
-      upperBound: 1,
-      lowerBound: 0.5,
-    );
+        duration: Duration(milliseconds: 600), initialValue: 1, lowerBound: 0);
     return InkWell(
       onTap: () {
         rotateAnimation.reset();
@@ -49,8 +46,8 @@ class CategoryItem extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (category.icon != null)
-              ScaleTransition(
-                scale: rotateAnimation,
+              FadeScaleTransition(
+                animation: rotateAnimation,
                 child: SvgPicture.asset(
                   category.icon!,
                   color: isSelected
