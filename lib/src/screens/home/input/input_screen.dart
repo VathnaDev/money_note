@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/widgets/input_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key? key}) : super(key: key);
@@ -12,11 +13,11 @@ class InputScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 10,
-          bottom:  TabBar(
+          bottom: TabBar(
             indicatorColor: Theme.of(context).colorScheme.secondary,
             tabs: [
-              Tab(text: "Expense"),
-              Tab(text: "Income"),
+              Tab(text: AppLocalizations.of(context)!.expense),
+              Tab(text: AppLocalizations.of(context)!.income),
             ],
           ),
         ),
@@ -30,4 +31,3 @@ class InputScreen extends StatelessWidget {
     );
   }
 }
-

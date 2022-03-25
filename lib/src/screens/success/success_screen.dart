@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/utils/color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SuccessScreen extends StatefulHookConsumerWidget {
   const SuccessScreen({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: Color(0xFF1E1F2E),
+      backgroundColor: const Color(0xFF1E1F2E),
       body: Container(
         padding: const EdgeInsets.all(40),
         child: Column(
@@ -28,22 +29,23 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                 children: [
                   SlideTransition(
                     position: Tween(
-                      begin: Offset(0, 2),
-                      end: Offset(0.0, 0),
+                      begin: const Offset(0, 2),
+                      end: const Offset(0.0, 0),
                     ).animate(
                       useAnimationController(
-                          duration: Duration(milliseconds: 500))
+                          duration: const Duration(milliseconds: 500))
                         ..forward(),
                     ),
                     child: ScaleTransition(
                       scale: Tween(begin: 0.5, end: 1.0).animate(
                         useAnimationController(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                         )..forward(),
                       ),
                       child: FadeTransition(
                         opacity: Tween(begin: 0.0, end: 1.0).animate(
-                          useAnimationController(duration: Duration(seconds: 1))
+                          useAnimationController(
+                              duration: const Duration(seconds: 1))
                             ..forward(),
                         ),
                         child: Center(
@@ -55,32 +57,32 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   SlideTransition(
                     position: Tween(
-                      begin: Offset(0, 4),
-                      end: Offset(0.0, 0),
+                      begin: const Offset(0, 4),
+                      end: const Offset(0.0, 0),
                     ).animate(
                       useAnimationController(
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                       )..forward(),
                     ),
                     child: FadeTransition(
                       opacity: Tween(begin: 0.0, end: 1.0).animate(
                         useAnimationController(
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                         )..forward(),
                       ),
                       child: Text(
-                        "Transaction Save\nSuccessfully",
+                        AppLocalizations.of(context)!.transactionSuccessMessage,
                         textAlign: TextAlign.center,
                         style: textTheme.headline5,
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
-                  Divider(),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
+                  const Divider(),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -99,13 +101,15 @@ class _SuccessScreenState extends ConsumerState<SuccessScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("BACK HOME"),
+                      child: Text(
+                        AppLocalizations.of(context)!.backHome,
+                      ),
                     ),
                   );
                 },
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),

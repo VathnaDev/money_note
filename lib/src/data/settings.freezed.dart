@@ -20,12 +20,14 @@ class _$SettingsTearOff {
 
   _Settings call(
       {String currency = "USD",
+      String language = "en",
       bool isDarkMode = false,
       bool isFirstOpen = true,
       String? pinPassword,
       DateTime? reminder}) {
     return _Settings(
       currency: currency,
+      language: language,
       isDarkMode: isDarkMode,
       isFirstOpen: isFirstOpen,
       pinPassword: pinPassword,
@@ -40,6 +42,7 @@ const $Settings = _$SettingsTearOff();
 /// @nodoc
 mixin _$Settings {
   String get currency => throw _privateConstructorUsedError;
+  String get language => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
   bool get isFirstOpen => throw _privateConstructorUsedError;
   String? get pinPassword => throw _privateConstructorUsedError;
@@ -56,6 +59,7 @@ abstract class $SettingsCopyWith<$Res> {
       _$SettingsCopyWithImpl<$Res>;
   $Res call(
       {String currency,
+      String language,
       bool isDarkMode,
       bool isFirstOpen,
       String? pinPassword,
@@ -73,6 +77,7 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
   @override
   $Res call({
     Object? currency = freezed,
+    Object? language = freezed,
     Object? isDarkMode = freezed,
     Object? isFirstOpen = freezed,
     Object? pinPassword = freezed,
@@ -82,6 +87,10 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
       currency: currency == freezed
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      language: language == freezed
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
               as String,
       isDarkMode: isDarkMode == freezed
           ? _value.isDarkMode
@@ -110,6 +119,7 @@ abstract class _$SettingsCopyWith<$Res> implements $SettingsCopyWith<$Res> {
   @override
   $Res call(
       {String currency,
+      String language,
       bool isDarkMode,
       bool isFirstOpen,
       String? pinPassword,
@@ -128,6 +138,7 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currency = freezed,
+    Object? language = freezed,
     Object? isDarkMode = freezed,
     Object? isFirstOpen = freezed,
     Object? pinPassword = freezed,
@@ -137,6 +148,10 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
       currency: currency == freezed
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      language: language == freezed
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
               as String,
       isDarkMode: isDarkMode == freezed
           ? _value.isDarkMode
@@ -163,6 +178,7 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
 class _$_Settings implements _Settings {
   _$_Settings(
       {this.currency = "USD",
+      this.language = "en",
       this.isDarkMode = false,
       this.isFirstOpen = true,
       this.pinPassword,
@@ -171,6 +187,9 @@ class _$_Settings implements _Settings {
   @JsonKey()
   @override
   final String currency;
+  @JsonKey()
+  @override
+  final String language;
   @JsonKey()
   @override
   final bool isDarkMode;
@@ -184,7 +203,7 @@ class _$_Settings implements _Settings {
 
   @override
   String toString() {
-    return 'Settings(currency: $currency, isDarkMode: $isDarkMode, isFirstOpen: $isFirstOpen, pinPassword: $pinPassword, reminder: $reminder)';
+    return 'Settings(currency: $currency, language: $language, isDarkMode: $isDarkMode, isFirstOpen: $isFirstOpen, pinPassword: $pinPassword, reminder: $reminder)';
   }
 
   @override
@@ -193,6 +212,7 @@ class _$_Settings implements _Settings {
         (other.runtimeType == runtimeType &&
             other is _Settings &&
             const DeepCollectionEquality().equals(other.currency, currency) &&
+            const DeepCollectionEquality().equals(other.language, language) &&
             const DeepCollectionEquality()
                 .equals(other.isDarkMode, isDarkMode) &&
             const DeepCollectionEquality()
@@ -206,6 +226,7 @@ class _$_Settings implements _Settings {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(currency),
+      const DeepCollectionEquality().hash(language),
       const DeepCollectionEquality().hash(isDarkMode),
       const DeepCollectionEquality().hash(isFirstOpen),
       const DeepCollectionEquality().hash(pinPassword),
@@ -220,6 +241,7 @@ class _$_Settings implements _Settings {
 abstract class _Settings implements Settings {
   factory _Settings(
       {String currency,
+      String language,
       bool isDarkMode,
       bool isFirstOpen,
       String? pinPassword,
@@ -227,6 +249,8 @@ abstract class _Settings implements Settings {
 
   @override
   String get currency;
+  @override
+  String get language;
   @override
   bool get isDarkMode;
   @override

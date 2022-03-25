@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/providers/pin_state.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PinScreen extends HookConsumerWidget {
   PinScreen({
@@ -122,7 +123,7 @@ class PinScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PIN Password"),
+        title: Text(AppLocalizations.of(context)!.pinPassword),
       ),
       body: Form(
         key: _formKey,
@@ -199,8 +200,8 @@ class PinScreen extends HookConsumerWidget {
                 onPressed: pins.value.contains("") ? null : onSubmit,
                 child: Text(
                   pinMode == PinMode.set || pinMode == PinMode.updatePin
-                      ? "Set PIN Password"
-                      : "Verify",
+                      ? AppLocalizations.of(context)!.setPinPassword
+                      : AppLocalizations.of(context)!.verify,
                 ),
               )
             ],

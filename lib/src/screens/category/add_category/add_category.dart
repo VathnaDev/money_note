@@ -6,6 +6,7 @@ import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddCategory extends HookConsumerWidget {
   const AddCategory({
@@ -33,9 +34,9 @@ class AddCategory extends HookConsumerWidget {
       );
       ref.read(categoryByTypeProvider(inputType).notifier).add(newCategory);
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Category added successfully.",
+        AppLocalizations.of(context)!.categoryAddedSuccessMessage,
       )));
       nameTextController.text = "";
       category.value = null;
@@ -43,7 +44,7 @@ class AddCategory extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Category"),
+        title: Text(AppLocalizations.of(context)!.addCategory),
         actions: [
           IconButton(
             onPressed: !isValid ? null : addNewCategory,
@@ -61,8 +62,8 @@ class AddCategory extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  "Category Name",
+                Text(
+                  AppLocalizations.of(context)!.categoryName,
                   textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 8),
@@ -71,13 +72,13 @@ class AddCategory extends HookConsumerWidget {
                   onChanged: (value) {
                     name.value = value;
                   },
-                  decoration: const InputDecoration(
-                    hintText: "Please input",
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.pleaseInput,
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Icon",
+                Text(
+                  AppLocalizations.of(context)!.icon,
                   textAlign: TextAlign.start,
                 ),
               ],

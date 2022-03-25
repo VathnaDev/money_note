@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
@@ -14,6 +15,7 @@ import 'package:money_note/src/screens/success/success_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,9 @@ class MyApp extends HookConsumerWidget {
     final isFirstOpen = ref.watch(
       settingsStateProvider.select((value) => value.isFirstOpen),
     );
+    final language = ref.watch(
+      settingsStateProvider.select((value) => value.language),
+    );
     final pinVerified = ref.watch(pinAuthState);
 
     return MaterialApp(
@@ -58,6 +63,17 @@ class MyApp extends HookConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      locale: Locale(language, ''),
+      localizationsDelegates: const [
+        AppLocalizations.delegate, // Add this line
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('km', ''),
+      ],
       // home: SuccessScreen(),
       home: _Unfocus(
         child: isFirstOpen

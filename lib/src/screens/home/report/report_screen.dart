@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/screens/home/report/category_report/category_report_view.dart';
 import 'package:money_note/src/screens/home/report/mothly_report/monthly_report_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReportScreen extends HookConsumerWidget {
   ReportScreen({
@@ -24,7 +25,11 @@ class ReportScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(filter.value == 0 ? "Monthly Report" : "Category Report"),
+        title: Text(
+          filter.value == 0
+              ? AppLocalizations.of(context)!.montlyReport
+              : AppLocalizations.of(context)!.categoryReport,
+        ),
         actions: [
           PopupMenuButton<int>(
             icon: const Icon(Icons.filter_alt_outlined),
@@ -40,10 +45,9 @@ class ReportScreen extends HookConsumerWidget {
                   value: 0,
                   child: Row(
                     children: [
-                      Icon(Icons.event,
-                          color: Theme.of(context).primaryColor),
+                      Icon(Icons.event, color: Theme.of(context).primaryColor),
                       SizedBox(width: 16),
-                      Text("Monthly"),
+                      Text(AppLocalizations.of(context)!.montly),
                     ],
                   ),
                 ),
@@ -51,9 +55,10 @@ class ReportScreen extends HookConsumerWidget {
                   value: 1,
                   child: Row(
                     children: [
-                      Icon(Icons.category, color: Theme.of(context).primaryColor),
+                      Icon(Icons.category,
+                          color: Theme.of(context).primaryColor),
                       SizedBox(width: 16),
-                      Text("Category"),
+                      Text(AppLocalizations.of(context)!.category),
                     ],
                   ),
                 ),

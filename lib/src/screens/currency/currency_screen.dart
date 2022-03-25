@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/currency.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CurrencyScreen extends HookConsumerWidget {
   CurrencyScreen({
@@ -11,10 +12,10 @@ class CurrencyScreen extends HookConsumerWidget {
   }) : super(key: key);
 
   final currencies = [
-    Currency("\$", "USD","en_US"),
-    Currency("៛", "KHR","km_KH"),
-    Currency("¥", "JPY","ja_JP"),
-    Currency("£", "GBP","en_GB"),
+    Currency("\$", "USD", "en_US"),
+    Currency("៛", "KHR", "km_KH"),
+    Currency("¥", "JPY", "ja_JP"),
+    Currency("£", "GBP", "en_GB"),
     // Currency("€", "ALL"),
     // Currency("лв", "BGN"),
   ];
@@ -29,7 +30,7 @@ class CurrencyScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Currency"),
+        title: Text(AppLocalizations.of(context)!.currency),
       ),
       body: ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 16),

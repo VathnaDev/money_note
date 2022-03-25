@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/providers/settings_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnBoardScreen extends HookConsumerWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context , WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void onSkip() {
       ref.read(settingsStateProvider.notifier).setIsFirstOpen(false);
     }
@@ -29,29 +30,26 @@ class OnBoardScreen extends HookConsumerWidget {
               buttonText: "Continue",
               onButtonTap: onContinue,
               onSkip: onSkip,
-              title: "Easy to add new transaction",
+              title: AppLocalizations.of(context)!.onboard1Title,
               image: "assets/images/Illustration_1.svg",
-              description:
-                  "We always try to bring the best experience to users. Your transactions are recorded as quickly as possible. You will not have any difficulties when you first use MoNo.",
+              description: AppLocalizations.of(context)!.onboard1Description,
             ),
             OnboardingItem(
               pageLabel: "2/3",
               buttonText: "Continue",
               onSkip: onSkip,
               onButtonTap: onContinue,
-              title: "Track income and expenses",
+              title: AppLocalizations.of(context)!.onboard2Title,
               image: "assets/images/Illustration_2.svg",
-              description:
-                  "Details tracking transactions visually with the adding images features bills.",
+              description: AppLocalizations.of(context)!.onboard2Description,
             ),
             OnboardingItem(
               pageLabel: "2/3",
               buttonText: "Get Started",
               onButtonTap: onContinue,
-              title: "Comprehensive Report",
+              title: AppLocalizations.of(context)!.onboard3Title,
               image: "assets/images/Illustration_3.svg",
-              description:
-                  "Supports viewing your balance for monthly, income and expenses, debts, loans as well as reports with category.",
+              description: AppLocalizations.of(context)!.onboard3Description,
             ),
           ],
         ),

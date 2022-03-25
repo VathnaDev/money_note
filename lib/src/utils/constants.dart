@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:money_note/src/data/category.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final expenseCategories = [
   Category(name: "Bank", icon: "assets/icons/Bank.svg"),
@@ -83,3 +85,19 @@ final allCategories = [
   Category(name: "Wallet", icon: "assets/icons/Wallet.svg"),
   Category(name: "WC", icon: "assets/icons/WC.svg"),
 ];
+
+final languages = {
+  "km": "Khmer",
+  "en": "English",
+};
+
+String getLanguage(String code, BuildContext context) {
+  switch (code) {
+    case "km":
+      return AppLocalizations.of(context)!.khmer;
+    case "en":
+      return AppLocalizations.of(context)!.english;
+    default:
+      return "";
+  }
+}

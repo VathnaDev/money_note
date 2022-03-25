@@ -9,6 +9,7 @@ import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/currency_text.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/note_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MonthlyReportView extends HookConsumerWidget {
   @override
@@ -79,10 +80,10 @@ class MonthlyReportView extends HookConsumerWidget {
                 child: TabBar(
                   indicatorColor: Theme.of(context).colorScheme.secondary,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: const [
-                    Tab(text: "All"),
-                    Tab(text: "Expense"),
-                    Tab(text: "Income"),
+                  tabs: [
+                    Tab(text: AppLocalizations.of(context)!.all),
+                    Tab(text: AppLocalizations.of(context)!.expense),
+                    Tab(text: AppLocalizations.of(context)!.income),
                   ],
                 ),
               ),
@@ -124,7 +125,7 @@ class BalanceInfo extends StatelessWidget {
           decoration: boxDecoration,
           child: Row(
             children: [
-              const Text("Current balance"),
+              Text(AppLocalizations.of(context)!.currentBalanace),
               Expanded(
                 child: CurrencyText(value: report.currentBalance),
               )
@@ -139,7 +140,7 @@ class BalanceInfo extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text("Income"),
+                  Text(AppLocalizations.of(context)!.income),
                   Expanded(
                     child: CurrencyText(value: report.income),
                   )
@@ -148,7 +149,7 @@ class BalanceInfo extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Text("Expense"),
+                  Text(AppLocalizations.of(context)!.expense),
                   Expanded(
                     child: CurrencyText(
                       value: report.expense * -1,
@@ -169,7 +170,8 @@ class BalanceInfo extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text("Expense/Income"),
+                  Text(
+                      "${AppLocalizations.of(context)!.expense}/${AppLocalizations.of(context)!.income}"),
                   Expanded(
                     child: CurrencyText(
                       value: report.expenseIncome,
@@ -180,7 +182,7 @@ class BalanceInfo extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Text("Previous Balance"),
+                  Text(AppLocalizations.of(context)!.previousBalance),
                   Expanded(
                     child: CurrencyText(
                       value: report.previousBalance,

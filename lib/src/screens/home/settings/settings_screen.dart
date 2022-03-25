@@ -8,8 +8,10 @@ import 'package:money_note/src/screens/currency/currency_screen.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/screens/reminder/reminder_screen.dart';
+import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/dialog.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends HookConsumerWidget {
   const SettingsScreen({
@@ -25,7 +27,7 @@ class SettingsScreen extends HookConsumerWidget {
     final iconColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Settings")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -48,7 +50,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text("Category"),
+                  Text(AppLocalizations.of(context)!.category),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -74,7 +76,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text("Currency"),
+                  Text(AppLocalizations.of(context)!.currency),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -108,7 +110,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text("PIN Password"),
+                  Text(AppLocalizations.of(context)!.pinPassword),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -134,13 +136,63 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text("Reminder"),
+                  Text(AppLocalizations.of(context)!.reminder),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
             ),
           ),
           const SizedBox(height: 28),
+          Container(
+            decoration: boxDecoration,
+            child: ListTile(
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    title: Text(AppLocalizations.of(context)!.changeLanguage),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ...languages.entries.map(
+                          (e) => ListTile(
+                            onTap: () {
+                              ref
+                                  .read(settingsStateProvider.notifier)
+                                  .setLanugage(e.key);
+                              Navigator.of(context).pop();
+                            },
+                            title: Text(getLanguage(e.key, context)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              title: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 4, right: 12),
+                    child: SvgPicture.asset(
+                      'assets/icons/Books.svg',
+                      color: iconColor,
+                    ),
+                  ),
+                  Text(AppLocalizations.of(context)!.language),
+                ],
+              ),
+              trailing: Text(getLanguage(
+                  ref.watch(
+                    settingsStateProvider.select((value) => value.language),
+                  ),
+                  context)),
+            ),
+          ),
+          const SizedBox(height: 8),
           Container(
             decoration: boxDecoration,
             child: SwitchListTile(
@@ -157,7 +209,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text("Dark Mode"),
+                  Text(AppLocalizations.of(context)!.darkMode),
                 ],
               ),
               value: ref.watch(
@@ -172,10 +224,11 @@ class SettingsScreen extends HookConsumerWidget {
               onTap: () async {
                 final result = await showConfirmDialog(
                   context: context,
-                  title: "Delete",
-                  content: "Do you want to delete all data?",
+                  title: AppLocalizations.of(context)!.delete,
+                  content:
+                      AppLocalizations.of(context)!.deleteAllConfirmMessage,
                 );
-                if(result){
+                if (result) {
                   ref.read(noteRepositoryProvider).clear();
                 }
               },
@@ -185,8 +238,8 @@ class SettingsScreen extends HookConsumerWidget {
                     padding: const EdgeInsets.only(left: 4, right: 12),
                     child: SvgPicture.asset('assets/icons/Trash.svg'),
                   ),
-                  const Text(
-                    "Delete All Data",
+                  Text(
+                    AppLocalizations.of(context)!.deleteAllData,
                     style: TextStyle(color: colorRed),
                   ),
                 ],

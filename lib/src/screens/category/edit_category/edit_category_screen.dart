@@ -6,6 +6,7 @@ import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/screens/category/add_category/add_category.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditCategoryScreen extends HookConsumerWidget {
   const EditCategoryScreen({
@@ -39,7 +40,8 @@ class EditCategoryScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Category"),
+        title: Text(
+            "${AppLocalizations.of(context)!.edit} ${AppLocalizations.of(context)!.category}"),
         actions: category.value == null
             ? null
             : [
@@ -58,7 +60,7 @@ class EditCategoryScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text("Expenses"),
+            Text(AppLocalizations.of(context)!.expense),
             const SizedBox(height: 8),
             CategoryGrid(
               physics: const NeverScrollableScrollPhysics(),
@@ -66,7 +68,9 @@ class EditCategoryScreen extends HookConsumerWidget {
                 ...ref.watch(
                   categoryByTypeProvider(InputType.expense),
                 ),
-                Category(name: "Add More", type: InputType.expense.name),
+                Category(
+                    name: AppLocalizations.of(context)!.addMore,
+                    type: InputType.expense.name),
               ],
               selectedColor: Colors.red,
               selectedCategory: category.value,
@@ -79,7 +83,7 @@ class EditCategoryScreen extends HookConsumerWidget {
               },
             ),
             const SizedBox(height: 28),
-            const Text("Income"),
+            Text(AppLocalizations.of(context)!.income),
             const SizedBox(height: 8),
             CategoryGrid(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -88,7 +92,9 @@ class EditCategoryScreen extends HookConsumerWidget {
                 ...ref.watch(
                   categoryByTypeProvider(InputType.income),
                 ),
-                Category(name: "Add More", type: InputType.income.name),
+                Category(
+                    name: AppLocalizations.of(context)!.addMore,
+                    type: InputType.income.name),
               ],
               selectedColor: Colors.red,
               selectedCategory: category.value,

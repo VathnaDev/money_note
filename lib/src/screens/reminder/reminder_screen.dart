@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/utils/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReminderScreen extends HookConsumerWidget {
   const ReminderScreen({
@@ -28,7 +29,7 @@ class ReminderScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reminder"),
+        title: Text(AppLocalizations.of(context)!.reminder),
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -58,7 +59,7 @@ class ReminderScreen extends HookConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              "Mono will reminder to note transaction on this time everyday",
+              AppLocalizations.of(context)!.appWillRemindNote,
               style: Theme.of(context).textTheme.caption,
               textAlign: TextAlign.start,
             ),
@@ -76,7 +77,7 @@ class ReminderScreen extends HookConsumerWidget {
                     .read(settingsStateProvider.notifier)
                     .setReminder(newReminder);
               },
-              child: const Text("Set Reminder"),
+              child: Text(AppLocalizations.of(context)!.save),
             )
           ],
         ),

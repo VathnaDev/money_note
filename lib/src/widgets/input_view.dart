@@ -17,6 +17,7 @@ import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InputView extends HookConsumerWidget {
   InputView({
@@ -55,7 +56,7 @@ class InputView extends HookConsumerWidget {
 
     final amountFocusNode = useFocusNode();
     final dollarScaleAnimation = useAnimationController(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       initialValue: 1,
       upperBound: 1,
       lowerBound: 0.4,
@@ -165,7 +166,9 @@ class InputView extends HookConsumerWidget {
                 },
               ),
             const SizedBox(height: 12),
-            Text(inputType == InputType.expense ? "Expense" : "Income"),
+            Text(inputType == InputType.expense
+                ? AppLocalizations.of(context)!.expense
+                : AppLocalizations.of(context)!.income),
             const SizedBox(height: 8),
             TextFormField(
               controller: amountController,
@@ -189,7 +192,7 @@ class InputView extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
-            const Text("Note"),
+            Text(AppLocalizations.of(context)!.note),
             const SizedBox(height: 8),
             AnimatedContainer(
               duration: const Duration(milliseconds: 500),
@@ -206,7 +209,7 @@ class InputView extends HookConsumerWidget {
                   note.value = value;
                 },
                 decoration: InputDecoration(
-                  hintText: "Please input",
+                  hintText: AppLocalizations.of(context)!.pleaseInput,
                   suffixIcon: RotationTransition(
                     turns: cameraIconAnimation,
                     child: IconButton(
@@ -225,7 +228,7 @@ class InputView extends HookConsumerWidget {
                   : Container(),
             ),
             const SizedBox(height: 12),
-            const Text("Category"),
+            Text(AppLocalizations.of(context)!.category),
             const SizedBox(height: 8),
             CategoryGrid(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -234,7 +237,7 @@ class InputView extends HookConsumerWidget {
                 ...ref.watch(
                   categoryByTypeProvider(inputType),
                 ),
-                Category(name: "Edit"),
+                Category(name: AppLocalizations.of(context)!.edit),
               ],
               selectedCategory: category.value,
               onItemTap: onCategorySelected,
@@ -253,7 +256,9 @@ class InputView extends HookConsumerWidget {
                       ? CircularProgressIndicator(
                           color: Theme.of(context).primaryColor,
                         )
-                      : Text(noteRecord == null ? "Submit" : "Update"),
+                      : Text(noteRecord == null
+                          ? AppLocalizations.of(context)!.save
+                          : AppLocalizations.of(context)!.update),
                 ),
               ),
             ),

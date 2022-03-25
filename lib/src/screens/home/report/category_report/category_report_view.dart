@@ -4,6 +4,7 @@ import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/screens/home/report/category_report/category_report_screen.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryReportView extends HookConsumerWidget {
   const CategoryReportView({
@@ -21,7 +22,7 @@ class CategoryReportView extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text("Expenses"),
+          Text(AppLocalizations.of(context)!.expense),
           const SizedBox(height: 8),
           CategoryGrid(
             physics: const NeverScrollableScrollPhysics(),
@@ -34,7 +35,7 @@ class CategoryReportView extends HookConsumerWidget {
             },
           ),
           const SizedBox(height: 28),
-          const Text("Income"),
+          Text(AppLocalizations.of(context)!.income),
           const SizedBox(height: 8),
           CategoryGrid(
             physics: const NeverScrollableScrollPhysics(),

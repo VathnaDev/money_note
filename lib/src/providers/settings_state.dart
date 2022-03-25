@@ -8,6 +8,7 @@ class SettingsState extends StateNotifier<Settings> {
     final isDark = sharedPreferences.getBool('isDarkTheme') ?? false;
     final isFirstOpen = sharedPreferences.getBool('isFirstOpen') ?? true;
     final currency = sharedPreferences.getString('currency') ?? "en_US";
+    final language = sharedPreferences.getString('language') ?? "en_US";
     final pinPassword = sharedPreferences.getString('pinPassword') ?? "";
     final reminder = sharedPreferences.getInt('reminder') ??
         DateTime.now().millisecondsSinceEpoch;
@@ -17,6 +18,7 @@ class SettingsState extends StateNotifier<Settings> {
       isDarkMode: isDark,
       pinPassword: pinPassword,
       isFirstOpen: isFirstOpen,
+      language: language,
       reminder: DateTime.fromMillisecondsSinceEpoch(reminder),
     );
   }
@@ -41,6 +43,11 @@ class SettingsState extends StateNotifier<Settings> {
   void setPin(String pinPassword) async {
     await sharedPreferences.setString('pinPassword', pinPassword);
     state = state.copyWith(pinPassword: pinPassword);
+  }
+
+  void setLanugage(String language) async {
+    await sharedPreferences.setString('language', language);
+    state = state.copyWith(language: language);
   }
 
   void setReminder(DateTime reminder) async {

@@ -7,6 +7,7 @@ import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/utils/date_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/input_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoteDetailScreen extends HookConsumerWidget {
   NoteDetailScreen({
@@ -29,8 +30,8 @@ class NoteDetailScreen extends HookConsumerWidget {
               ref.read(notesStateProvider(null).notifier).remove(note.id);
               Navigator.of(context).pop();
             },
-            child: const Text(
-              "Delete",
+            child: Text(
+              AppLocalizations.of(context)!.delete,
               style: TextStyle(color: colorRed),
             ),
           )
