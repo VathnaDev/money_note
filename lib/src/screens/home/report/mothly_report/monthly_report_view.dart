@@ -44,7 +44,7 @@ class MonthlyReportView extends HookConsumerWidget {
       child: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
-            expandedHeight: 410,
+            expandedHeight: 420,
             floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -80,6 +80,7 @@ class MonthlyReportView extends HookConsumerWidget {
                 child: TabBar(
                   indicatorColor: Theme.of(context).colorScheme.secondary,
                   indicatorSize: TabBarIndicatorSize.tab,
+                  labelStyle: Theme.of(context).primaryTextTheme.labelMedium,
                   tabs: [
                     Tab(text: AppLocalizations.of(context)!.all),
                     Tab(text: AppLocalizations.of(context)!.expense),
@@ -125,8 +126,11 @@ class BalanceInfo extends StatelessWidget {
           decoration: boxDecoration,
           child: Row(
             children: [
-              Text(AppLocalizations.of(context)!.currentBalanace),
               Expanded(
+                child: Text(AppLocalizations.of(context)!.currentBalanace),
+              ),
+              Expanded(
+                flex: 2,
                 child: CurrencyText(value: report.currentBalance),
               )
             ],

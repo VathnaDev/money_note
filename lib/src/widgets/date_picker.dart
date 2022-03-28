@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/locale.dart';
+import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/date_ext.dart';
+import 'package:intl/intl.dart';
 
 class DatePicker extends HookConsumerWidget {
   DatePicker(
@@ -62,7 +65,10 @@ class DatePicker extends HookConsumerWidget {
               child: GestureDetector(
                 onTap: onDateClicked,
                 child: Text(
-                  DateFormat(displayFormat).format(date.value),
+                  DateFormat(
+                    displayFormat,
+                    Localizations.localeOf(context).languageCode,
+                  ).format(date.value),
                   textAlign: TextAlign.center,
                   style: textTheme.bodyText1,
                 ),

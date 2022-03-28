@@ -39,7 +39,9 @@ class NoteList extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Text(
-          note.date.MMMddyyyyFormat(),
+          note.date.MMMddyyyyFormat(
+            locale: Localizations.localeOf(context).languageCode,
+          ),
         ),
       ),
       itemBuilder: (context, Note note) {

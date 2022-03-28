@@ -120,9 +120,13 @@ class CalculatorView extends HookConsumerWidget {
                         CalculatorButton(text: "8", onTap: onButtonTap),
                         CalculatorButton(text: "9", onTap: onButtonTap),
                         CalculatorButton(
-                            text: "+", textColor: colorBlue, onTap: onButtonTap),
+                            text: "+",
+                            textColor: colorBlue,
+                            onTap: onButtonTap),
                         CalculatorButton(
-                            text: "AC", textColor: colorRed, onTap: onButtonTap),
+                            text: "AC",
+                            textColor: colorRed,
+                            onTap: onButtonTap),
                       ],
                     ),
                   ),
@@ -134,9 +138,13 @@ class CalculatorView extends HookConsumerWidget {
                         CalculatorButton(text: "5", onTap: onButtonTap),
                         CalculatorButton(text: "6", onTap: onButtonTap),
                         CalculatorButton(
-                            text: "-", textColor: colorBlue, onTap: onButtonTap),
+                            text: "-",
+                            textColor: colorBlue,
+                            onTap: onButtonTap),
                         CalculatorButton(
-                            text: "Del", textColor: colorRed, onTap: onButtonTap),
+                            text: "Del",
+                            textColor: colorRed,
+                            onTap: onButtonTap),
                       ],
                     ),
                   ),
@@ -244,7 +252,8 @@ class CalculatorButton extends StatelessWidget {
                 child: Text(
                   text,
                   style: Theme.of(context).textTheme.headline2?.copyWith(
-                        color: textColor,
+                        color: textColor ??
+                            Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                   textAlign: TextAlign.center,
                 ),

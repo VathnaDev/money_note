@@ -27,7 +27,7 @@ class SettingsScreen extends HookConsumerWidget {
     final iconColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings)),
+      appBar: AppBar(title: Text("${AppLocalizations.of(context)!.settings} ")),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -50,7 +50,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.category),
+                  Expanded(child: Text(AppLocalizations.of(context)!.category)),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -76,7 +76,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.currency),
+                  Expanded(child: Text(AppLocalizations.of(context)!.currency)),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -110,7 +110,8 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.pinPassword),
+                  Expanded(
+                      child: Text(AppLocalizations.of(context)!.pinPassword)),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -136,7 +137,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.reminder),
+                  Expanded(child: Text(AppLocalizations.of(context)!.reminder)),
                 ],
               ),
               trailing: SvgPicture.asset('assets/icons/CaretCircleRight.svg'),
@@ -182,7 +183,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.language),
+                  Expanded(child: Text(AppLocalizations.of(context)!.language)),
                 ],
               ),
               trailing: Text(getLanguage(
@@ -209,7 +210,7 @@ class SettingsScreen extends HookConsumerWidget {
                       color: iconColor,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.darkMode),
+                  Expanded(child: Text(AppLocalizations.of(context)!.darkMode)),
                 ],
               ),
               value: ref.watch(
@@ -238,9 +239,11 @@ class SettingsScreen extends HookConsumerWidget {
                     padding: const EdgeInsets.only(left: 4, right: 12),
                     child: SvgPicture.asset('assets/icons/Trash.svg'),
                   ),
-                  Text(
-                    AppLocalizations.of(context)!.deleteAllData,
-                    style: TextStyle(color: colorRed),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.deleteAllData,
+                      style: TextStyle(color: colorRed),
+                    ),
                   ),
                 ],
               ),

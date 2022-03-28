@@ -22,7 +22,9 @@ class NoteDetailScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          note.date.ddMMMyyyyEEFormat(),
+          note.date.ddMMMyyyyEEFormat(
+            locale: Localizations.localeOf(context).languageCode,
+          ),
         ),
         actions: [
           TextButton(

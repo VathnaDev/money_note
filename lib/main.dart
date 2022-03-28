@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
@@ -57,6 +58,10 @@ class MyApp extends HookConsumerWidget {
     );
     final pinVerified = ref.watch(pinAuthState);
 
+    AppTheme.baseTextTheme = language == 'en'
+        ? GoogleFonts.poppinsTextTheme()
+        : GoogleFonts.notoSerifKhmerTextTheme();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -74,12 +79,12 @@ class MyApp extends HookConsumerWidget {
         Locale('en', ''),
         Locale('km', ''),
       ],
-      // home: SuccessScreen(),
-      home: _Unfocus(
-        child: isFirstOpen
-            ? OnBoardScreen()
-            : (pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify)),
-      ),
+      home: HomeScreen(),
+      // home: _Unfocus(
+      //   child: isFirstOpen
+      //       ? OnBoardScreen()
+      //       : (pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify)),
+      // ),
     );
   }
 }

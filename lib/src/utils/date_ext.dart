@@ -5,19 +5,18 @@ const MMMMyyyy = "MMMM ,yyyy";
 const MMMddyyyy = "MMM dd yyyy";
 
 extension DateExt on DateTime {
-
-  String ddMMMyyyyEEFormat() {
-    final df = DateFormat(ddMMMyyyyEE);
+  String ddMMMyyyyEEFormat({String? locale}) {
+    final df = DateFormat(ddMMMyyyyEE, locale);
     return df.format(this);
   }
 
-  String MMMyyyyFormat() {
-    final df = DateFormat(MMMMyyyy);
+  String MMMyyyyFormat({String? locale}) {
+    final df = DateFormat(MMMMyyyy, locale);
     return df.format(this);
   }
 
-  String MMMddyyyyFormat() {
-    final df = DateFormat(MMMddyyyy);
+  String MMMddyyyyFormat({String? locale}) {
+    final df = DateFormat(MMMddyyyy, locale);
     return df.format(this);
   }
 }

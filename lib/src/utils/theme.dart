@@ -19,8 +19,13 @@ final boxDecoration = BoxDecoration(
 class AppTheme {
   AppTheme._();
 
-  static final baseLightTheme = ThemeData();
-  static final baseDarkTheme = ThemeData.dark();
+  static TextTheme baseTextTheme = TextTheme();
+
+  static final baseLightTheme = ThemeData(textTheme: baseTextTheme);
+  static final baseDarkTheme = ThemeData(
+    brightness: Brightness.dark,
+    textTheme: baseTextTheme,
+  );
 
   static final inputTheme = InputDecorationTheme(
     border: OutlineInputBorder(
@@ -72,29 +77,27 @@ class AppTheme {
   static const lightPrimary = Color(0xFF404040);
   static const lightSecondary = Color(0xFFA6A6A6);
 
-  static final googleTextTheme = GoogleFonts.poppinsTextTheme();
-  static final textTheme =
-      GoogleFonts.poppinsTextTheme(googleTextTheme).copyWith(
-    headline1: googleTextTheme.headline1?.copyWith(
+  static final textTheme = baseTextTheme.copyWith(
+    headline1: baseTextTheme.headline1?.copyWith(
       fontSize: 32,
       fontWeight: FontWeight.normal,
     ),
-    headline2: googleTextTheme.headline2?.copyWith(
+    headline2: baseTextTheme.headline2?.copyWith(
       fontSize: 24,
       fontWeight: FontWeight.bold,
     ),
-    subtitle1: googleTextTheme.subtitle1?.copyWith(
+    subtitle1: baseTextTheme.subtitle1?.copyWith(
       fontSize: 18,
       // fontWeight: FontWeight.w600,
     ),
-    subtitle2: googleTextTheme.subtitle2?.copyWith(
+    subtitle2: baseTextTheme.subtitle2?.copyWith(
       fontSize: 16,
       fontWeight: FontWeight.w600,
     ),
-    bodyText1: googleTextTheme.bodyText1?.copyWith(
+    bodyText1: baseTextTheme.bodyText1?.copyWith(
       fontSize: 16,
     ),
-    caption: googleTextTheme.caption?.copyWith(
+    caption: baseTextTheme.caption?.copyWith(
       fontSize: 12,
     ),
   );
@@ -102,6 +105,7 @@ class AppTheme {
   static final lightTheme = baseLightTheme.copyWith(
     elevatedButtonTheme: elevatedButtonTheme,
     textTheme: textTheme,
+    primaryTextTheme: textTheme,
     inputDecorationTheme: inputTheme,
     primaryColor: lightPrimary,
     primaryColorDark: lightPrimary,
@@ -123,42 +127,39 @@ class AppTheme {
   static const darkPrimary = Color(0xFFEAEAEA);
   static const darkSecondary = Color(0xFFBABABF);
 
-  static final darkPoppins =
-      GoogleFonts.poppinsTextTheme(baseDarkTheme.textTheme);
-  static final darkTextTheme = GoogleFonts.poppinsTextTheme()
+  static final darkTextTheme = baseTextTheme
       .copyWith(
-        headline1: darkPoppins.headline1?.copyWith(
+        headline1: baseTextTheme.headline1?.copyWith(
           fontSize: 32,
           fontWeight: FontWeight.normal,
         ),
-        headline2: darkPoppins.headline2?.copyWith(
+        headline2: baseTextTheme.headline2?.copyWith(
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        subtitle1: darkPoppins.subtitle1?.copyWith(
+        subtitle1: baseTextTheme.subtitle1?.copyWith(
           fontSize: 18,
-          // fontWeight: FontWeight.w600,
         ),
-        subtitle2: darkPoppins.subtitle2?.copyWith(
+        subtitle2: baseTextTheme.subtitle2?.copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
-        bodyText1: darkPoppins.bodyText1?.copyWith(
+        bodyText1: baseTextTheme.bodyText1?.copyWith(
           fontSize: 16,
           color: darkSecondary,
         ),
-        caption: darkPoppins.caption?.copyWith(
+        caption: baseTextTheme.caption?.copyWith(
           fontSize: 12,
         ),
       )
       .apply(
         bodyColor: darkPrimary,
-        fontFamily: GoogleFonts.poppins().fontFamily,
       );
 
   static final darkTheme = baseDarkTheme.copyWith(
     elevatedButtonTheme: elevatedButtonTheme,
     textTheme: darkTextTheme,
+    primaryTextTheme: darkTextTheme,
     inputDecorationTheme: inputTheme,
     primaryColor: const Color(0xFFEAEAEA),
     primaryColorDark: const Color(0xFFEAEAEA),
