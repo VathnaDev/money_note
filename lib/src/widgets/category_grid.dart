@@ -12,7 +12,10 @@ class CategoryGrid extends StatelessWidget {
     this.physics,
     this.padding,
     this.displayLabel,
+    this.crossAxisCount,
   }) : super(key: key);
+
+  final int? crossAxisCount;
 
   final ScrollPhysics? physics;
   final EdgeInsetsGeometry? padding;
@@ -31,7 +34,7 @@ class CategoryGrid extends StatelessWidget {
       crossAxisSpacing: 4,
       mainAxisSpacing: 4,
       shrinkWrap: true,
-      crossAxisCount: 4,
+      crossAxisCount: crossAxisCount ?? 4,
       children: [
         ...items.map(
           (e) => CategoryItem(

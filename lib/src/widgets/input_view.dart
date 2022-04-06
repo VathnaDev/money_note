@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:money_note/objectbox.g.dart';
+import 'package:money_note/objectbox.g.dart' as box;
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
@@ -18,6 +18,7 @@ import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class InputView extends HookConsumerWidget {
   InputView({
@@ -136,7 +137,7 @@ class InputView extends HookConsumerWidget {
           note: note.value,
           type: inputType.name,
           images: images.value,
-          category: ToOne<Category>(target: category.value),
+          category: box.ToOne<Category>(target: category.value),
         )..id = noteRecord?.id ?? 0;
         ref.read(notesStateProvider(null).notifier).insertOrUpdate(newNote);
 
@@ -155,111 +156,157 @@ class InputView extends HookConsumerWidget {
       primary: true,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ResponsiveRowColumn(
+          columnCrossAxisAlignment: CrossAxisAlignment.start,
+          rowCrossAxisAlignment: CrossAxisAlignment.start,
+          rowMainAxisAlignment: MainAxisAlignment.center,
+          rowPadding: const EdgeInsets.all(30),
+          columnPadding: const EdgeInsets.all(30),
+          rowSpacing: 30,
+          layout: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
+              ? ResponsiveRowColumnType.COLUMN
+              : ResponsiveRowColumnType.ROW,
           children: [
-            if (noteRecord == null)
-              DatePicker(
-                initialDate: date,
-                onDateChanged: (selectedDate) {
-                  date = selectedDate;
-                },
-              ),
-            const SizedBox(height: 12),
-            Text(inputType == InputType.expense
-                ? AppLocalizations.of(context)!.expense
-                : AppLocalizations.of(context)!.income),
-            const SizedBox(height: 8),
-            TextFormField(
-              controller: amountController,
-              focusNode: amountFocusNode,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                if (value.isEmpty) {
-                  amount.value = 0;
-                } else {
-                  amount.value = double.parse(value);
-                }
-              },
-              decoration: InputDecoration(
-                hintText: "0.00",
-                prefixIcon: ScaleTransition(
-                  scale: dollarScaleAnimation,
-                  child: Icon(
-                    Icons.attach_money,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(AppLocalizations.of(context)!.note),
-            const SizedBox(height: 8),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.linearToEaseOut,
-              height: noteExpended.value ? 50 * 2.5 : 50,
-              child: TextFormField(
-                focusNode: noteFocusNode,
-                controller: noteController,
-                keyboardType: TextInputType.text,
-                textAlignVertical: TextAlignVertical.top,
-                expands: true,
-                maxLines: null,
-                onChanged: (value) {
-                  note.value = value;
-                },
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.pleaseInput,
-                  suffixIcon: RotationTransition(
-                    turns: cameraIconAnimation,
-                    child: IconButton(
-                      onPressed: pickImage,
-                      icon: const Icon(Icons.camera),
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (noteRecord == null)
+                    DatePicker(
+                      initialDate: date,
+                      onDateChanged: (selectedDate) {
+                        date = selectedDate;
+                      },
+                    ),
+                  const SizedBox(height: 12),
+                  Text(inputType == InputType.expense
+                      ? AppLocalizations.of(context)!.expense
+                      : AppLocalizations.of(context)!.income),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: amountController,
+                    focusNode: amountFocusNode,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        amount.value = 0;
+                      } else {
+                        amount.value = double.parse(value);
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: "0.00",
+                      prefixIcon: ScaleTransition(
+                        scale: dollarScaleAnimation,
+                        child: const Icon(
+                          Icons.attach_money,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  Text(AppLocalizations.of(context)!.note),
+                  const SizedBox(height: 8),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linearToEaseOut,
+                    height: noteExpended.value ? 50 * 2.5 : 50,
+                    child: TextFormField(
+                      focusNode: noteFocusNode,
+                      controller: noteController,
+                      keyboardType: TextInputType.text,
+                      textAlignVertical: TextAlignVertical.top,
+                      expands: true,
+                      maxLines: null,
+                      onChanged: (value) {
+                        note.value = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.pleaseInput,
+                        suffixIcon: RotationTransition(
+                          turns: cameraIconAnimation,
+                          child: IconButton(
+                            onPressed: pickImage,
+                            icon: const Icon(Icons.camera),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    child: images.value.isNotEmpty
+                        ? ImageGrid(
+                            imagesPath: images.value, onRemove: onRemoveImage)
+                        : Container(),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            AnimatedSize(
-              duration: const Duration(milliseconds: 300),
-              child: images.value.isNotEmpty
-                  ? ImageGrid(imagesPath: images.value, onRemove: onRemoveImage)
-                  : Container(),
-            ),
-            const SizedBox(height: 12),
-            Text(AppLocalizations.of(context)!.category),
-            const SizedBox(height: 8),
-            CategoryGrid(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              physics: const NeverScrollableScrollPhysics(),
-              items: [
-                ...ref.watch(
-                  categoryByTypeProvider(inputType),
-                ),
-                Category(name: AppLocalizations.of(context)!.edit),
-              ],
-              selectedCategory: category.value,
-              onItemTap: onCategorySelected,
-            ),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: 48,
-                width:
-                    isSubmitting.value ? 48 : MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: isValid == true ? onSubmit : null,
-                  child: isSubmitting.value
-                      ? CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor,
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 12),
+                  Text(AppLocalizations.of(context)!.category),
+                  const SizedBox(height: 8),
+                  CategoryGrid(
+                    crossAxisCount: ResponsiveValue<int>(
+                      context,
+                      defaultValue: 4,
+                      valueWhen: [
+                        Condition.smallerThan(
+                          name: MOBILE,
+                          value: 4,
+                        ),
+                        Condition.largerThan(
+                          name: MOBILE,
+                          value: 6,
+                        ),
+                        Condition.largerThan(
+                          name: TABLET,
+                          value: 4,
                         )
-                      : Text(noteRecord == null
-                          ? AppLocalizations.of(context)!.save
-                          : AppLocalizations.of(context)!.update),
-                ),
+                      ],
+                    ).value,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    physics: const NeverScrollableScrollPhysics(),
+                    items: [
+                      ...ref.watch(
+                        categoryByTypeProvider(inputType),
+                      ),
+                      Category(name: AppLocalizations.of(context)!.edit),
+                    ],
+                    selectedCategory: category.value,
+                    onItemTap: onCategorySelected,
+                  ),
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.center,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: 48,
+                      width: isSubmitting.value
+                          ? 48
+                          : MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        onPressed: isValid == true ? onSubmit : null,
+                        child: isSubmitting.value
+                            ? CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Text(
+                                noteRecord == null
+                                    ? AppLocalizations.of(context)!.save
+                                    : AppLocalizations.of(context)!.update,
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

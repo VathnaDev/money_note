@@ -17,6 +17,7 @@ import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,12 +80,24 @@ class MyApp extends HookConsumerWidget {
         Locale('en', ''),
         Locale('km', ''),
       ],
-      home: HomeScreen(),
-      // home: _Unfocus(
-      //   child: isFirstOpen
-      //       ? OnBoardScreen()
-      //       : (pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify)),
-      // ),
+      builder: (context, widget) {
+        return ResponsiveWrapper.builder(
+          widget,
+          maxWidth: 1200,
+          minWidth: 480,
+          defaultScale: true,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(480, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          ],
+        );
+      },
+      home: _Unfocus(
+        child: isFirstOpen
+            ? OnBoardScreen()
+            : (pinVerified ? HomeScreen() : PinScreen(pinMode: PinMode.verify)),
+      ),
     );
   }
 }
