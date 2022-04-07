@@ -13,6 +13,7 @@ import 'package:money_note/src/providers/notes_state.dart';
 import 'package:money_note/src/screens/category/edit_category/edit_category_screen.dart';
 import 'package:money_note/src/screens/success/success_screen.dart';
 import 'package:money_note/src/utils/circle_reveal_clipper.dart';
+import 'package:money_note/src/utils/size_ext.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:money_note/src/widgets/date_picker.dart';
 import 'package:money_note/src/widgets/image_grid.dart';
@@ -160,9 +161,9 @@ class InputView extends HookConsumerWidget {
           columnCrossAxisAlignment: CrossAxisAlignment.start,
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           rowMainAxisAlignment: MainAxisAlignment.center,
-          rowPadding: const EdgeInsets.all(30),
-          columnPadding: const EdgeInsets.all(30),
-          rowSpacing: 30,
+          rowPadding: EdgeInsets.all(context.defaultSpacing()),
+          columnPadding: EdgeInsets.all(context.defaultSpacing()),
+          rowSpacing: context.defaultSpacing(),
           layout: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
               ? ResponsiveRowColumnType.COLUMN
               : ResponsiveRowColumnType.ROW,

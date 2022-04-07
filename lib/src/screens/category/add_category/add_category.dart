@@ -7,6 +7,7 @@ import 'package:money_note/src/providers/category_state.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/widgets/category_grid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class AddCategory extends HookConsumerWidget {
   const AddCategory({
@@ -41,6 +42,21 @@ class AddCategory extends HookConsumerWidget {
       nameTextController.text = "";
       category.value = null;
     }
+
+    final crossAxisCount = ResponsiveValue<int>(
+      context,
+      defaultValue: 8,
+      valueWhen: const [
+        Condition.smallerThan(
+          name: MOBILE,
+          value: 4,
+        ),
+        Condition.largerThan(
+          name: TABLET,
+          value: 10,
+        )
+      ],
+    ).value;
 
     return Scaffold(
       appBar: AppBar(
@@ -86,6 +102,7 @@ class AddCategory extends HookConsumerWidget {
           ),
           Expanded(
             child: CategoryGrid(
+              crossAxisCount: crossAxisCount,
               padding: const EdgeInsets.only(
                 left: 16,
                 right: 16,

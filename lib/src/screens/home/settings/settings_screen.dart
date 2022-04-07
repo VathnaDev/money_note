@@ -10,6 +10,7 @@ import 'package:money_note/src/screens/pin/pin_screen.dart';
 import 'package:money_note/src/screens/reminder/reminder_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/dialog.dart';
+import 'package:money_note/src/utils/size_ext.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,7 +30,7 @@ class SettingsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text("${AppLocalizations.of(context)!.settings} ")),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.defaultSpacing()),
         children: [
           Container(
             decoration: boxDecoration,

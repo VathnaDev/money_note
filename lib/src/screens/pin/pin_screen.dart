@@ -123,7 +123,7 @@ class PinScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pinPassword),
+        title: Text(AppLocalizations.of(context)!.pinPassword + " "),
       ),
       body: Form(
         key: _formKey,
@@ -201,7 +201,7 @@ class PinScreen extends HookConsumerWidget {
                 child: Text(
                   pinMode == PinMode.set || pinMode == PinMode.updatePin
                       ? AppLocalizations.of(context)!.setPinPassword
-                      : AppLocalizations.of(context)!.verify,
+                      : AppLocalizations.of(context)!.verify + " ",
                 ),
               )
             ],
