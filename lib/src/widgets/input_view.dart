@@ -197,7 +197,6 @@ class InputView extends HookConsumerWidget {
                       }
                     },
                     decoration: InputDecoration(
-                      hintText: "0.00",
                       prefixIcon: ScaleTransition(
                         scale: dollarScaleAnimation,
                         child: const Icon(
