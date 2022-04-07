@@ -16,6 +16,7 @@ class InputScreen extends HookConsumerWidget {
         toolbarHeight: 10,
         bottom: TabBar(
           controller: controller,
+          indicatorColor: Theme.of(context).colorScheme.secondary,
           tabs: [
             Tab(child: Text(AppLocalizations.of(context)!.expense)),
             Tab(child: Text(AppLocalizations.of(context)!.income)),

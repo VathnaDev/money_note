@@ -60,12 +60,25 @@ class MonthlyReportView extends HookConsumerWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        TabBar(
-                          tabs: [
-                            Tab(text: AppLocalizations.of(context)!.all),
-                            Tab(text: AppLocalizations.of(context)!.expense),
-                            Tab(text: AppLocalizations.of(context)!.income),
-                          ],
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(12),
+                            ),
+                            color: Theme.of(context).backgroundColor,
+                          ),
+                          child: TabBar(
+                            indicatorColor:
+                                Theme.of(context).colorScheme.secondary,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            labelStyle:
+                                Theme.of(context).primaryTextTheme.labelMedium,
+                            tabs: [
+                              Tab(text: AppLocalizations.of(context)!.all),
+                              Tab(text: AppLocalizations.of(context)!.expense),
+                              Tab(text: AppLocalizations.of(context)!.income),
+                            ],
+                          ),
                         ),
                         Expanded(child: NoteTabs(report: report)),
                       ],
