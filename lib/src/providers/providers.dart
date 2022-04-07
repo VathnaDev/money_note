@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/repo/note_repo.dart';
+import 'package:money_note/src/data/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../objectbox.g.dart';
@@ -16,4 +17,8 @@ final storeProvider = Provider<Store>((ref) => throw UnimplementedError());
 
 final noteRepositoryProvider = Provider<NoteRepository>(
   (ref) => NoteRepository(ref.read),
+);
+
+final notificationServiceProvider = Provider<NotificationService>(
+  (ref) => throw UnimplementedError(),
 );

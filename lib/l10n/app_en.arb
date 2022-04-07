@@ -61,6 +61,7 @@
     "onboard3Title": "Comprehensive Report",
     "onboard1Description": "We always try to bring the best experience to users. Your transactions are recorded as quickly as possible. You will not have any difficulties when you first use MoNo.",
     "onboard2Description": "Details tracking transactions visually with the adding images features bills.",
-    "onboard3Description": "Supports viewing your balance for monthly, income and expenses, debts, loans as well as reports with category."
+    "onboard3Description": "Supports viewing your balance for monthly, income and expenses, debts, loans as well as reports with category.",
+    "saveSuccess": "Save Successfully"
     
 }

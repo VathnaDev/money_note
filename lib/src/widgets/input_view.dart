@@ -156,7 +156,7 @@ class InputView extends HookConsumerWidget {
     return SingleChildScrollView(
       primary: true,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: ResponsiveRowColumn(
           columnCrossAxisAlignment: CrossAxisAlignment.start,
           rowCrossAxisAlignment: CrossAxisAlignment.start,

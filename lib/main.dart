@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/object_box.dart';
+import 'package:money_note/src/data/services/notification_service.dart';
 import 'package:money_note/src/providers/pin_state.dart';
 import 'package:money_note/src/providers/providers.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/screens/home/home_screen.dart';
+import 'package:money_note/src/screens/notification_demo.dart';
 import 'package:money_note/src/screens/onboard/onboard_screen.dart';
 import 'package:money_note/src/screens/pin/pin_mode.dart';
 import 'package:money_note/src/screens/pin/pin_screen.dart';
-import 'package:money_note/src/screens/success/success_screen.dart';
 import 'package:money_note/src/utils/constants.dart';
 import 'package:money_note/src/utils/theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,11 +34,15 @@ void main() async {
     categories.putMany([...expense, ...income]);
   }
 
+  final notificationService = NotificationService();
+  await notificationService.init();
+
   runApp(
     ProviderScope(
       overrides: [
         sharedPrefProvider.overrideWithValue(sharedPreferences),
         storeProvider.overrideWithValue(objectbox.store),
+        notificationServiceProvider.overrideWithValue(notificationService),
       ],
       child: MyApp(),
     ),

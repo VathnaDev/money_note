@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:money_note/src/providers/providers.dart';
 import 'package:money_note/src/providers/settings_state.dart';
 import 'package:money_note/src/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -60,22 +61,33 @@ class ReminderScreen extends HookConsumerWidget {
             const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.appWillRemindNote,
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.start,
             ),
             const Spacer(),
             ElevatedButton(
               onPressed: () {
+                final now = DateTime.now();
+
                 final newReminder = DateTime(
-                  2022,
-                  1,
-                  1,
+                  now.year,
+                  now.month,
+                  now.day,
                   reminder.value.hour,
                   reminder.value.minute,
                 );
+
                 ref
                     .read(settingsStateProvider.notifier)
                     .setReminder(newReminder);
+                ref
+                    .read(notificationServiceProvider)
+                    .scheduleReminderUser(newReminder);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.saveSuccess),
+                  ),
+                );
               },
               child: Text(AppLocalizations.of(context)!.save),
             )
