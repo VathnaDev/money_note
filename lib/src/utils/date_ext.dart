@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 const ddMMMyyyyEE = "dd MMM yyyy (EE)";
-const MMMMyyyy = "MMMM ,yyyy";
+const MMMMyyyy = "MMMM, yyyy";
 const MMMddyyyy = "MMM dd yyyy";
 
 extension DateExt on DateTime {
