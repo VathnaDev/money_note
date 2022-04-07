@@ -1,15 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:money_note/src/data/category.dart';
 import 'package:money_note/src/data/input_type.dart';
 import 'package:money_note/src/data/note.dart';
-import 'package:money_note/src/screens/home/report/mothly_report/monthly_report_view.dart';
 import 'package:money_note/src/utils/date_ext.dart';
-import 'package:money_note/src/utils/theme.dart';
 import 'package:money_note/src/widgets/currency_text.dart';
-import 'package:objectbox/src/relations/to_one.dart';
 
 class NoteList extends StatelessWidget {
   NoteList({
@@ -28,7 +25,11 @@ class NoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (notes.isEmpty) return const Center(child: Text("No Data"));
+    if (notes.isEmpty) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noData),
+      );
+    }
 
     return GroupedListView(
       physics: physics,

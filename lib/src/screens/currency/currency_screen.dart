@@ -30,7 +30,7 @@ class CurrencyScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.currency),
+        title: Text(AppLocalizations.of(context)!.currency + " "),
       ),
       body: ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 16),
